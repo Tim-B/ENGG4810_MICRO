@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="84">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df name="ENGG4810_MICRO"
+        root="C:/Users/Tim/Documents/Uni/Semester 1 2013/ENGG4810/micro/ENGG4810_MICRO">
+      <df name=".obj">
+      </df>
+      <df name="bin">
+      </df>
+      <df name="src">
+        <df name="include">
+          <in>stellariscommon.h</in>
+        </df>
+        <in>main.c</in>
+        <in>proj0.c</in>
+        <in>startup.c</in>
+        <in>stellariscommon.c</in>
+        <in>syscalls.c</in>
+      </df>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>C:/Users/Tim/Documents/Uni/Semester 1 2013/ENGG4810/micro/ENGG4810_MICRO/Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>C:\Users\Tim\Documents\Uni\Semester 1 2013\ENGG4810\micro\ENGG4810_MICRO</Elem>
+  </sourceRootList>
+  <projectmakefile>C:/Users/Tim/Documents/Uni/Semester 1 2013/ENGG4810/micro/ENGG4810_MICRO/Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>C:/Users/Tim/Documents/Uni/Semester 1 2013/ENGG4810/micro/ENGG4810_MICRO</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath></executablePath>
+          <cTool>
+            <incDir>
+              <pElem></pElem>
+              <pElem>../../../../../../../../StellarisWare</pElem>
+            </incDir>
+            <preprocessorList>
+              <Elem>PART_LM4F120H5QR</Elem>
+              <Elem>TARGET_IS_BLIZZARD_RA1</Elem>
+            </preprocessorList>
+          </cTool>
+        </makeTool>
+      </makefileType>
+      <item path="C:/Users/Tim/Documents/Uni/Semester 1 2013/ENGG4810/micro/ENGG4810_MICRO/src/main.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool>
+        </cTool>
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
