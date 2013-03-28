@@ -1,8 +1,8 @@
 TARGET = engg
 
 #### Setup ####
-STELLARISWARE = C:\StellarisWare
-CMSIS = C:\cmsis
+STELLARISWARE = /Users/timbell/arm-dev/stellarisware
+CMSIS = /Users/timbell/arm-dev/cmsis/CMSIS
 SRC           = $(wildcard src/*.c)
 TOOLCHAIN     = arm-none-eabi
 PART          = LM4F120H5QR
@@ -30,19 +30,19 @@ LIBC_PATH=$(shell $(CC) $(CFLAGS) -print-file-name=libc.a)
 LIBM_PATH=$(shell $(CC) $(CFLAGS) -print-file-name=libm.a)
 DRIVER_LIB=$(STELLARISWARE)/driverlib/gcc-cm4f/libdriver-cm4f.a
 USB_LIB=$(STELLARISWARE)/usblib/gcc-cm4f/libusb-cm4f.a
-CMSIS_MATH=$(CMSIS)/CMSIS/Lib/GCC/libarm_cortexM4lf_math.a
-CMSIS_LIB=$(CMSIS)/CMSIS/Lib/libdsplib_lm4f.a
+# CMSIS_MATH=$(CMSIS)/CMSIS/Lib/GCC/libarm_cortexM4lf_math.a
+# CMSIS_LIB=$(CMSIS)/CMSIS/Lib/libdsplib_lm4f.a
 
 CFLAGS+= -I$(STELLARISWARE) 
-CFLAGS+= -I$(CMSIS)/CMSIS/Include
-CFLAGS+= -I$(CMSIS)/Device/ARM/ARMCM4/Include
+# FLAGS+= -I$(CMSIS)/CMSIS/Include
+# CFLAGS+= -I$(CMSIS)/Device/ARM/ARMCM4/Include
 
 LFLAGS = --gc-sections --entry ResetISR
 CPFLAGS = -Obinary
 
 ODFLAGS = -S
 
-FLASHER=LMFlash
+FLASHER=lm4flash
 FLASHER_FLAGS=-v -r
 
 OBJS = $(SRC:.c=.o)
