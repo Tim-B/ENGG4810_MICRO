@@ -32,7 +32,13 @@
 #include "utils/uartstdio.h"
 #include <math.h>
 #include <stdint.h>
+#include "inc/hw_timer.h"
+#include "inc/hw_ints.h"
+#include "driverlib/timer.h"
+#include "driverlib/interrupt.h"
 
+
+int toggle = 0;
 //*****************************************************************************
 //
 //! \addtogroup ssi_examples_list
@@ -108,6 +114,49 @@ InitConsole(void) {
     UARTStdioInit(0);
 }
 
+void
+Timer0IntHandler(void)
+{
+    // UARTprintf("This timer is defs not waiting for any mates\n  ");
+    
+    TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+    
+
+    int16_t val = 0;
+    int16_t write = 0;
+    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_PIN_4);
+    SysCtlDelay(10);
+    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, 0);
+    /*
+    while (1) {
+        //write = sin(val);
+        // write = 0x0001111111111111 & val;
+
+        write = val;
+        //sinval = sin(val) * 1000;
+        //write = sinval + 1000;
+        // UARTprintf("Val %u:\n  ", write);
+        
+        write = 0x3FFF & write;
+        write = 0x3000 | write;
+        
+        SSIDataPut(SSI0_BASE, write);
+        while (SSIBusy(SSI0_BASE)) {}
+        //UARTprintf("Sent:\n  ");
+        //
+        //SysCtlDelay(1);
+        //GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_PIN_4);
+        // val += 1;
+        if(val > 0) {
+            val = 0;
+        } else {
+            val = 3000;
+        }
+        SysCtlDelay(1000);
+    }
+     **/
+}
+
 //*****************************************************************************
 //
 // Configure SSI0 in master Freescale (SPI) mode.  This example will send out
@@ -129,10 +178,10 @@ main(void) {
     //
     SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN |
             SYSCTL_XTAL_16MHZ);
-    
+
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_4);
-    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_PIN_4);
+    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, 0);
 
     //
     // Set up the serial console to use for displaying messages.  This is
@@ -196,11 +245,9 @@ main(void) {
     SSIConfigSetExpClk(SSI0_BASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0,
             SSI_MODE_MASTER, SysCtlClockGet() / 2, 16);
 
-    //
-    // Enable the SSI0 module.
-    //
-    SSIEnable(SSI0_BASE);
 
+
+    SSIEnable(SSI0_BASE);
     //
     // Read any residual data from the SSI port.  This makes sure the receive
     // FIFOs are empty, so we don't read any unwanted junk.  This is done here
@@ -210,9 +257,10 @@ main(void) {
     // The "non-blocking" function checks if there is any data in the receive
     // FIFO and does not "hang" if there isn't.
     //
+    UARTprintf("point 8\n  ");
     while (SSIDataGetNonBlocking(SSI0_BASE, &ulDataRx[0])) {
     }
-
+    UARTprintf("point 10\n  ");
     //
     // Initialize the data to send.
     //
@@ -220,82 +268,50 @@ main(void) {
     ulDataTx[1] = 0b01010101;
     ulDataTx[2] = 0b01010101;
 
-    //
-    // Display indication that the SSI is transmitting data.
-    //
-    UARTprintf("Sent:\n  ");
-    
-    int16_t val = 0;
-    int16_t write = 0;
-    float sinval = 0;
-    int toggle = 0;
 
+    //
+    // Enable lazy stacking for interrupt handlers.  This allows floating-point
+    // instructions to be used within interrupt handlers, but at the expense of
+    // extra stack usage.
+    //
+    // FPULazyStackingEnable();
+
+    //
+    // Set the clocking to run directly from the crystal.
+    //
+    SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN |
+            SYSCTL_XTAL_16MHZ);
+
+    //
+    // Enable the peripherals used by this example.
+    //
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+
+    //
+    // Enable processor interrupts.
+    //
+    IntMasterEnable();
+
+    //
+    // Configure the two 32-bit periodic timers.
+    //
+    TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
+    TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / ((1024 * 43) + 160));
+
+    //
+    // Setup the interrupts for the timer timeouts.
+    //
+    IntEnable(INT_TIMER0A);
+    TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+
+    //
+    // Enable the timers.
+    //
+    TimerEnable(TIMER0_BASE, TIMER_A);
+
+    //
+    // Loop forever while the timers run.
+    //
     while (1) {
-        //write = sin(val);
-        // write = 0x0001111111111111 & val;
-        if(toggle) {
-            GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, 0);
-            toggle = 0;
-        } else {
-            GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_PIN_4);
-            toggle = 1;
-        }
-        
-        sinval = sin(val) * 1000;
-        write = sinval + 1000;
-        // UARTprintf("Val %u:\n  ", write);
-        
-        write = 0x3FFF & write;
-        write = 0x3000 | write;
-        
-        SSIDataPut(SSI0_BASE, write);
-        while (SSIBusy(SSI0_BASE)) {}
-        //UARTprintf("Sent:\n  ");
-        //
-        //SysCtlDelay(1);
-        //GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_PIN_4);
-        val += 1;
-        if(val > 360) {
-            val = 0;
-        }
-        // SysCtlDelay(25);
     }
-
-
-    //
-    // Wait until SSI0 is done transferring all the data in the transmit FIFO.
-    //
-
-
-    //
-    // Display indication that the SSI is receiving data.
-    //
-    UARTprintf("\nReceived:\n  ");
-
-    //
-    // Receive 3 bytes of data.
-
-    //
-    for (ulindex = 0; ulindex < NUM_SSI_DATA; ulindex++) {
-        //
-        // Receive the data using the "blocking" Get function. This function
-        // will wait until there is data in the receive FIFO before returning.
-        //
-        SSIDataGet(SSI0_BASE, &ulDataRx[ulindex]);
-
-        //
-        // Since we are using 8-bit data, mask off the MSB.
-        //
-        ulDataRx[ulindex] &= 0x00FF;
-
-        //
-        // Display the data that SSI0 received.
-        //
-        UARTprintf("'%c' ", ulDataRx[ulindex]);
-    }
-
-    //
-    // Return no errors
-    //
-    return (0);
 }

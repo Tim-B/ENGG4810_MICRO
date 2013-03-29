@@ -12,7 +12,6 @@ FABI          = softfp
 SRC           += $(STELLARISWARE)/utils/uartstdio.c
 
 LINKER_FILE = $(STELLARISWARE)/boards/ek-lm4f120xl/hello/hello.ld
-SRC        += $(STELLARISWARE)/boards/ek-lm4f120xl/hello/startup_gcc.c
 
 CC = $(TOOLCHAIN)-gcc
 LD = $(TOOLCHAIN)-ld
