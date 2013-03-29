@@ -227,25 +227,38 @@ main(void) {
     
     int16_t val = 0;
     int16_t write = 0;
+    float sinval = 0;
+    int toggle = 0;
 
     while (1) {
         //write = sin(val);
         // write = 0x0001111111111111 & val;
-        write = sin(val) * 1000;
+        if(toggle) {
+            GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, 0);
+            toggle = 0;
+        } else {
+            GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_PIN_4);
+            toggle = 1;
+        }
+        
+        sinval = sin(val) * 1000;
+        write = sinval + 1000;
+        // UARTprintf("Val %u:\n  ", write);
+        
         write = 0x3FFF & write;
         write = 0x3000 | write;
         
         SSIDataPut(SSI0_BASE, write);
         while (SSIBusy(SSI0_BASE)) {}
         //UARTprintf("Sent:\n  ");
-        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, 0);
-        SysCtlDelay(10);
-        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_PIN_4);
-        val += 100;
-        if(val > 4093) {
+        //
+        //SysCtlDelay(1);
+        //GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_PIN_4);
+        val += 1;
+        if(val > 360) {
             val = 0;
         }
-        SysCtlDelay(200000);
+        // SysCtlDelay(25);
     }
 
 
