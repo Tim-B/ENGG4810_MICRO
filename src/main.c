@@ -36,9 +36,21 @@
 #include "inc/hw_ints.h"
 #include "driverlib/timer.h"
 #include "driverlib/interrupt.h"
+#include "ff.h"
+#include "diskio.h"
+
+#define PATH "/mods"
+#define BITDEPTH 11                               // 11 bits PWM
+#define SAMPLERATE (SysCtlClockGet() / (1 << BITDEPTH))  
+
+FATFS fso; // The FATFS structure (file system object) holds dynamic work area of individual logical drives
+DIR dir; // The DIR structure is used for the work area to read a directory by f_oepndir, f_readdir function
+FILINFO fileInfo; // The FILINFO structure holds a file information returned by f_stat and f_readdir function
+FIL file; // The FIL structure (file object) holds state of an open file
 
 
 int toggle = 0;
+int val = 0;
 //*****************************************************************************
 //
 //! \addtogroup ssi_examples_list
@@ -79,6 +91,63 @@ int toggle = 0;
 //*****************************************************************************
 #define NUM_SSI_DATA 3
 
+FRESULT scan_files(
+        char* path /* Start node to be scanned (also used as work area) */
+        ) {
+    FRESULT res;
+    FILINFO fno;
+    int i;
+    char *fn; /* This function is assuming non-Unicode cfg. */
+#if _USE_LFN
+    static char lfn[_MAX_LFN + 1];
+    fno.lfname = lfn;
+    fno.lfsize = sizeof lfn;
+#endif
+
+
+    res = f_opendir(&dir, path); /* Open the directory */
+    if (res == FR_OK) {
+        i = strlen(path);
+        for (;;) {
+            res = f_readdir(&dir, &fno); /* Read a directory item */
+            if (res != FR_OK || fno.fname[0] == 0) break; /* Break on error or end of dir */
+            if (fno.fname[0] == '.') continue; /* Ignore dot entry */
+#if _USE_LFN
+            fn = *fno.lfname ? fno.lfname : fno.fname;
+#else
+            fn = fno.fname;
+#endif
+            if (fno.fattrib & AM_DIR) { /* It is a directory */
+                UARTprintf(&path[i], "/%s", fn);
+                res = scan_files(path);
+                if (res != FR_OK) break;
+                path[i] = 0;
+            } else { /* It is a file. */
+                UARTprintf("%s/%s\n", path, fn);
+            }
+        }
+    }
+
+    return res;
+}
+
+void initSD() {
+    FRESULT res;
+    FILINFO fno;
+    IntMasterDisable();
+    UARTprintf("Init SD\n");
+    while (disk_initialize(0));
+    UARTprintf("Mounting FS\n");
+    f_mount(0, &fso);
+    UARTprintf("\n");
+    //f_chdir(PATH);
+    UARTprintf("Opening %s\n", PATH);
+    //f_opendir(&dir, ".");
+    scan_files(PATH);
+    UARTprintf("shitcunt %s\n", PATH);
+
+}
+
 //*****************************************************************************
 //
 // This function sets up UART0 to be used for a console to display information
@@ -115,46 +184,31 @@ InitConsole(void) {
 }
 
 void
-Timer0IntHandler(void)
-{
+Timer0IntHandler(void) {
     // UARTprintf("This timer is defs not waiting for any mates\n  ");
-    
+
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
-    
-
-    int16_t val = 0;
     int16_t write = 0;
-    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_PIN_4);
-    SysCtlDelay(10);
-    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, 0);
-    /*
-    while (1) {
-        //write = sin(val);
-        // write = 0x0001111111111111 & val;
+    //GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_PIN_4);
+    //SysCtlDelay(10);
+    //GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, 0);
 
-        write = val;
-        //sinval = sin(val) * 1000;
-        //write = sinval + 1000;
-        // UARTprintf("Val %u:\n  ", write);
-        
-        write = 0x3FFF & write;
-        write = 0x3000 | write;
-        
-        SSIDataPut(SSI0_BASE, write);
-        while (SSIBusy(SSI0_BASE)) {}
-        //UARTprintf("Sent:\n  ");
-        //
-        //SysCtlDelay(1);
-        //GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_PIN_4);
-        // val += 1;
-        if(val > 0) {
-            val = 0;
-        } else {
-            val = 3000;
-        }
-        SysCtlDelay(1000);
+
+    write = 1;
+    //sinval = sin(val) * 1000;
+
+
+    write = 0x3FFF & write;
+    write = 0x3000 | write;
+
+    SSIDataPut(SSI1_BASE, write);
+    while (SSIBusy(SSI1_BASE)) {
     }
-     **/
+
+    //if (val >= (NUM_ELEMENTS - 1)) {
+    //    val = 0;
+    //}
+    //val++;
 }
 
 //*****************************************************************************
@@ -199,7 +253,7 @@ main(void) {
     //
     // The SSI0 peripheral must be enabled for use.
     //
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI0);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI1);
 
     //
     // For this example SSI0 is used with PortA[5:2].  The actual port and pins
@@ -214,10 +268,10 @@ main(void) {
     // This step is not necessary if your part does not support pin muxing.
     // TODO: change this to select the port/pin you are using.
     //
-    GPIOPinConfigure(GPIO_PA2_SSI0CLK);
-    GPIOPinConfigure(GPIO_PA3_SSI0FSS);
-    GPIOPinConfigure(GPIO_PA4_SSI0RX);
-    GPIOPinConfigure(GPIO_PA5_SSI0TX);
+    GPIOPinConfigure(GPIO_PF2_SSI1CLK);
+    GPIOPinConfigure(GPIO_PF3_SSI1FSS);
+    GPIOPinConfigure(GPIO_PF0_SSI1RX);
+    GPIOPinConfigure(GPIO_PF1_SSI1TX);
 
     //
     // Configure the GPIO settings for the SSI pins.  This function also gives
@@ -230,8 +284,8 @@ main(void) {
     //      PA2 - SSI0CLK
     // TODO: change this to select the port/pin you are using.
     //
-    GPIOPinTypeSSI(GPIO_PORTA_BASE, GPIO_PIN_5 | GPIO_PIN_4 | GPIO_PIN_3 |
-            GPIO_PIN_2);
+    GPIOPinTypeSSI(GPIO_PORTF_BASE, GPIO_PIN_2 | GPIO_PIN_4 | GPIO_PIN_0 |
+            GPIO_PIN_1);
 
     //
     // Configure and enable the SSI port for SPI master mode.  Use SSI0,
@@ -242,12 +296,12 @@ main(void) {
     // capture data on.  Please reference the datasheet for more information on
     // the different SPI modes.
     //
-    SSIConfigSetExpClk(SSI0_BASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0,
+    SSIConfigSetExpClk(SSI1_BASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0,
             SSI_MODE_MASTER, SysCtlClockGet() / 2, 16);
 
 
 
-    SSIEnable(SSI0_BASE);
+    SSIEnable(SSI1_BASE);
     //
     // Read any residual data from the SSI port.  This makes sure the receive
     // FIFOs are empty, so we don't read any unwanted junk.  This is done here
@@ -258,7 +312,7 @@ main(void) {
     // FIFO and does not "hang" if there isn't.
     //
     UARTprintf("point 8\n  ");
-    while (SSIDataGetNonBlocking(SSI0_BASE, &ulDataRx[0])) {
+    while (SSIDataGetNonBlocking(SSI1_BASE, &ulDataRx[0])) {
     }
     UARTprintf("point 10\n  ");
     //
@@ -296,7 +350,11 @@ main(void) {
     // Configure the two 32-bit periodic timers.
     //
     TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
-    TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / ((1024 * 43) + 160));
+    TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / ((1024 * 42)));
+
+    unsigned long ulPeriod;
+    ulPeriod = SysCtlClockGet() / SAMPLERATE;
+    // TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / (1024 * 20));
 
     //
     // Setup the interrupts for the timer timeouts.
@@ -308,6 +366,8 @@ main(void) {
     // Enable the timers.
     //
     TimerEnable(TIMER0_BASE, TIMER_A);
+
+    initSD();
 
     //
     // Loop forever while the timers run.
