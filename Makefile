@@ -1,17 +1,29 @@
 TARGET = engg
+ifeq ($(OS),Windows_NT)
+    STELLARISWARE = C:\StellarisWare
+    CMSIS = C:\cmsis
+    FLASHER=LMFlash
+else
+    UNAME_S := $(shell uname -s)
+    ifeq ($(UNAME_S),Darwin)
+        STELLARISWARE = /Users/timbell/arm-dev/stellarisware
+	CMSIS = /Users/timbell/arm-dev/cmsis/CMSIS
+	FLASHER=lm4flash
+    endif
+endif
 
-#### Setup ####
-STELLARISWARE = /Users/timbell/arm-dev/stellarisware
-CMSIS = /Users/timbell/arm-dev/cmsis/CMSIS
-SRC           = $(wildcard src/*.c)
+SRC           = $(wildcard src/third_party/**/*.c)
+SRC           += $(wildcard src/system/*.c)
+SRC           += $(wildcard src/mpc/*.c)
+SRC           += $(STELLARISWARE)/utils/uartstdio.c
+
 TOOLCHAIN     = arm-none-eabi
 PART          = LM4F120H5QR
 CPU           = cortex-m4
 FPU           = fpv4-sp-d16
 FABI          = softfp
-SRC           += $(STELLARISWARE)/utils/uartstdio.c
 
-LINKER_FILE = $(STELLARISWARE)/boards/ek-lm4f120xl/hello/hello.ld
+LINKER_FILE = src/system/engg.ld
 
 CC = $(TOOLCHAIN)-gcc
 LD = $(TOOLCHAIN)-ld
@@ -41,7 +53,6 @@ CPFLAGS = -Obinary
 
 ODFLAGS = -S
 
-FLASHER=lm4flash
 FLASHER_FLAGS=-v -r
 
 OBJS = $(SRC:.c=.o)
@@ -73,4 +84,4 @@ install: $(TARGET)
 clean:
 	@echo
 	@echo Cleaning...
-	rm src/*.o src/*.d bin/*
+	rm  bin/* src/**/*.o src/**/*.d
