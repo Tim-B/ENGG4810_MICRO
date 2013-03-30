@@ -14,6 +14,10 @@
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
 #include "utils/uartstdio.h"
+#include "inc/hw_timer.h"
+#include "inc/hw_ints.h"
+#include "driverlib/timer.h"
+#include "driverlib/interrupt.h"
 // End Stellaris includes
 
 // Third Party Includes
@@ -25,6 +29,8 @@
 #include "application.h"
 #include "SoundOutControl.h"
 #include "DACControl.h"
+#include "KeyControl.h"
+#include "systick.h"
 // End Application Includes
 
 

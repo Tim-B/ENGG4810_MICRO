@@ -1,9 +1,5 @@
 #include "global.h"
 #include "SoundOutControl.h"
-#include "inc/hw_timer.h"
-#include "inc/hw_ints.h"
-#include "driverlib/timer.h"
-#include "driverlib/interrupt.h"
 
 void soundoutcontrol_setup() {
     //
@@ -16,11 +12,6 @@ void soundoutcontrol_setup() {
     // Enable the peripherals used by this example.
     //
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
-
-    //
-    // Enable processor interrupts.
-    //
-    IntMasterEnable();
 
     //
     // Configure the two 32-bit periodic timers.
@@ -47,5 +38,6 @@ void soundoutcontrol_setup() {
 
 void soundoutTimerHanlder(void) {
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
-    //UARTprintf("Tick\n");
+    // UARTprintf("Tick: %i\n", get_tick());
+    // scan_keys();
 }
