@@ -9,17 +9,12 @@ FIL file;
 void sd_init() {
     FRESULT res;
     FILINFO fno;
-    IntMasterDisable();
-    UARTprintf("Init SD\n");
     while (disk_initialize(0));
-    UARTprintf("Mounting FS\n");
     f_mount(0, &fso);
-    UARTprintf("\n");
     //f_chdir(PATH);
-    UARTprintf("Opening %s\n", PATH);
     //f_opendir(&dir, ".");
     sd_list(PATH);
-    UARTprintf("shitcunt %s\n", PATH);
+    UARTprintf("SD card initialized\n", NULL);
 }
 
 void sd_read() {

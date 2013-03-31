@@ -42,7 +42,7 @@ void soundoutTimerHanlder(void) {
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
 
     
-    // UARTprintf("Tick: %i\n", cnt);
+    // UARTprintf("Tick: %i\n");
     // scan_keys();
     
     if(cnt) {
