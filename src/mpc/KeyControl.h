@@ -21,7 +21,7 @@ void scan_keys();
 #define NUM_KEY_ROWS 4
 #define NUM_KEY_COLS 3
 
-#define DEBOUNCE_DELAY 100
+#define DEBOUNCE_DELAY 50
 
 extern unsigned char mpc_row_keys[NUM_KEY_ROWS];
 

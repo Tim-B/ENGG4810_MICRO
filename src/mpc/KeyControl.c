@@ -13,7 +13,6 @@ void keycontrol_setup() {
     GPIOPinTypeGPIOInput(GPIO_PORTD_BASE, LOW_PINS);
 
     GPIOIntTypeSet(GPIO_PORTD_BASE, LOW_PINS, GPIO_RISING_EDGE);
-    // GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
     GPIOPinIntEnable(GPIO_PORTD_BASE, LOW_PINS);
     GPIOPortIntRegister(GPIO_PORTD_BASE, keypressHanlder);
     DEBUG_PRINT("Keypad control initialized\n", NULL);

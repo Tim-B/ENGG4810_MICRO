@@ -1,6 +1,8 @@
 #include "global.h"
 #include "SoundOutControl.h"
 
+int toggle = 0;
+
 void soundoutcontrol_setup() {
     //
     // Set the clocking to run directly from the crystal.
@@ -40,4 +42,11 @@ void soundoutTimerHanlder(void) {
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
     // UARTprintf("Tick: %i\n", get_tick());
     // scan_keys();
+    if(toggle) {
+        dac_put(3000);
+        toggle = 0;
+    } else {
+        dac_put(0);
+        toggle = 1;
+    }
 }
