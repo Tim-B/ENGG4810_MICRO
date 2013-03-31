@@ -5,6 +5,9 @@ FATFS fso;
 DIR dir;
 FILINFO fileInfo;
 FIL file;
+BYTE buffer[WAV_HEADER_SIZE];
+wave_sample sample_buffer;
+UINT br, bw;
 
 void sd_init() {
     FRESULT res;
@@ -17,8 +20,26 @@ void sd_init() {
     UARTprintf("SD card initialized\n", NULL);
 }
 
+void mpc_sample_open(mpc_sample *sample, char* wavname) {
+    f_open(&sample->file, "/mpc/groovy.wav", FA_OPEN_EXISTING | FA_READ);
+    f_read(&sample->file, &sample->header, sizeof sample->header, &sample->read_bytes);
+}
+
+void mpc_sample_load_next(mpc_sample *sample) {
+    f_read(&sample->file, &sample->next_sample, sizeof sample->next_sample, &sample->read_bytes);
+}
+
 void sd_read() {
-    
+    FRESULT res;
+    res = f_open(&file, "/mpc/lowfc.wav", FA_OPEN_EXISTING | FA_READ);
+
+    wave_header wave_file;
+
+    res = f_read(&file, &wave_file, sizeof wave_file, &br);
+
+
+    UARTprintf("Read: %i\n", wave_file.ChunkSize);
+    f_close(&file);
 }
 
 FRESULT sd_list(char* path) {

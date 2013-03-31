@@ -13,16 +13,19 @@ void setup() {
     FPUEnable();
 
     uart_setup();
-    soundoutcontrol_setup();
+    
+    sd_init();
     dac_setup();
     keycontrol_setup();
     tick_setup();
+    soundoutcontrol_setup();
+    
     IntMasterEnable();
-    sd_init();
             
     DEBUG_PRINT("Setup complete\n", NULL);
 }
 
 void loop() {
     checkDebounce();
+    checkSampleState();
 }

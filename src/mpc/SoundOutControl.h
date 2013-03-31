@@ -8,8 +8,13 @@
 #ifndef SOUNDOUTCONTROL_H
 #define	SOUNDOUTCONTROL_H
 
+#define NUM_SAMPLES 16
+
 void soundoutcontrol_setup();
 void soundoutTimerHanlder(void);
+void checkSampleState(void);
+
+mpc_sample samples[NUM_SAMPLES];
 
 #endif	/* SOUNDOUTCONTROL_H */
 

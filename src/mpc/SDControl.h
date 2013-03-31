@@ -8,16 +8,16 @@
 #ifndef SDCONTROL_H
 #define	SDCONTROL_H
 
-#include "../third_party/fatfs/ff.h"
-#include "../third_party/fatfs/diskio.h"
-
 void sd_init();
 
 void sd_read();
 
 FRESULT sd_list(char* path);
 
-#define PATH "/mods"
+void mpc_sample_open(mpc_sample *sample, char* wavname);
+void mpc_sample_load_next(mpc_sample *sample);
+
+#define PATH "/mpc"
 
 #endif	/* SDCONTROL_H */
 

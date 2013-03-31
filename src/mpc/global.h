@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdint.h>
+#include <stdbool.h>
 // End general includes
 
 // Stellaris includes
@@ -22,17 +23,22 @@
 // End Stellaris includes
 
 // Third Party Includes
-
+#include "../third_party/fatfs/ff.h"
+#include "../third_party/fatfs/diskio.h"
+#include "../third_party/fatfs/integer.h"
 // End Third Party Includes
 
 //Application Includes
 #include "uart.h"
+#include "WavHandler.h"
+#include "Sample.h"
+#include "SDControl.h"
 #include "application.h"
 #include "SoundOutControl.h"
 #include "DACControl.h"
 #include "KeyControl.h"
 #include "systick.h"
-#include "SDControl.h"
+
 // End Application Includes
 
 #define M_PI 3.14159265358979323846

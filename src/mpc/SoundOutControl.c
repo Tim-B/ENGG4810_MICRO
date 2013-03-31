@@ -3,12 +3,16 @@
 
 int cnt = 0;
 
+mpc_sample sample;
+
+bool checkSamples = false;
+
 void soundoutcontrol_setup() {
+    
     //
     // Set the clocking to run directly from the crystal.
     //
-    SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN |
-            SYSCTL_XTAL_16MHZ);
+    SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ);
 
     //
     // Enable the peripherals used by this example.
@@ -19,8 +23,9 @@ void soundoutcontrol_setup() {
     // Configure the two 32-bit periodic timers.
     //
     TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
-    //TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / ((1024 * 42)));
-    TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet());
+    
+    TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / ((1024 * 106)));
+    //TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet());
 
     // TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / (1024 * 20));
 
@@ -34,23 +39,40 @@ void soundoutcontrol_setup() {
     // Enable the timers.
     //
     TimerEnable(TIMER0_BASE, TIMER_A);
+    samples[0].in_use = true;
+
+    for (int i = 0; i < NUM_SAMPLES; i++) {
+        if (samples[i].in_use == true) {
+            setup_sample(&samples[i], "something.wav");
+            UARTprintf("Sample rate: %i\n", samples[i].header.bitsPerSample);
+            UARTprintf("Sample setup %p\n", &samples[i]);
+        }
+    }
 
     DEBUG_PRINT("Sound out control initialized\n", NULL);
 }
 
+void checkSampleState() {
+    if (checkSamples) {
+        mpc_sample sample;
+        for (int i = 0; i < NUM_SAMPLES; i++) {
+            sample = samples[i];
+            if (samples[i].in_use == true) {
+                // UARTprintf("Sample check %i %p\n", i, &samples[i]);
+                check_waiting(&samples[i]);
+            }
+        }
+        checkSamples = false;
+    }
+}
+
 void soundoutTimerHanlder(void) {
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
-
+   // sample = samples[0];
     
-    // UARTprintf("Tick: %i\n");
+    short val = read_sample(&samples[0]);
+    // UARTprintf("Tick: %i\n", val);
     // scan_keys();
-    
-    if(cnt) {
-        dac_put(3000);
-        cnt = 0;
-    } else {
-        dac_put(0);
-        cnt = 1;
-    }
-     
+    dac_put(val);
+    checkSamples = true;
 }
