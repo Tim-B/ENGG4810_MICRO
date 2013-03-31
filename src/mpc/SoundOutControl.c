@@ -1,7 +1,7 @@
 #include "global.h"
 #include "SoundOutControl.h"
 
-int toggle = 0;
+int cnt = 0;
 
 void soundoutcontrol_setup() {
     //
@@ -40,13 +40,17 @@ void soundoutcontrol_setup() {
 
 void soundoutTimerHanlder(void) {
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
-    // UARTprintf("Tick: %i\n", get_tick());
+
+    
+    // UARTprintf("Tick: %i\n", cnt);
     // scan_keys();
-    if(toggle) {
+    
+    if(cnt) {
         dac_put(3000);
-        toggle = 0;
+        cnt = 0;
     } else {
         dac_put(0);
-        toggle = 1;
+        cnt = 1;
     }
+     
 }

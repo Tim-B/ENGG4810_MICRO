@@ -18,6 +18,7 @@
 #include "inc/hw_ints.h"
 #include "driverlib/timer.h"
 #include "driverlib/interrupt.h"
+#include "driverlib/fpu.h"
 // End Stellaris includes
 
 // Third Party Includes
@@ -31,8 +32,10 @@
 #include "DACControl.h"
 #include "KeyControl.h"
 #include "systick.h"
+#include "SDControl.h"
 // End Application Includes
 
+#define M_PI 3.14159265358979323846
 
 // Debug
 #ifdef DEBUG
