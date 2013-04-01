@@ -41,7 +41,7 @@ void soundoutcontrol_setup() {
     TimerEnable(TIMER0_BASE, TIMER_A);
     
     for (int i = 0; i < NUM_SAMPLES; i++) {
-        samples[i].in_use == false;
+        samples[i].in_use = false;
     }
     
     samples[0].in_use = true;
