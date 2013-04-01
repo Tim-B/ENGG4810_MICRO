@@ -12,7 +12,7 @@ void soundoutcontrol_setup() {
     //
     // Set the clocking to run directly from the crystal.
     //
-    SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ);
+    //SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ);
 
     //
     // Enable the peripherals used by this example.
@@ -24,8 +24,8 @@ void soundoutcontrol_setup() {
     //
     TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
     
-    TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / ((1024 * 106)));
-    //TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet());
+    //TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / ((1024 * 5)));
+    TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet());
 
     // TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / (1024 * 20));
 
@@ -73,6 +73,14 @@ void soundoutTimerHanlder(void) {
     short val = read_sample(&samples[0]);
     // UARTprintf("Tick: %i\n", val);
     // scan_keys();
-    dac_put(val);
+    //dac_put(val);
+    
+    if(cnt) {
+        dac_put(3000);
+        cnt = 0;
+    } else {
+        dac_put(0);
+        cnt = 1;
+    }
     checkSamples = true;
 }

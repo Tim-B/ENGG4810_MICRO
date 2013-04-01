@@ -13,7 +13,7 @@ void dac_setup() {
     GPIOPinConfigure(GPIO_PF0_SSI1RX);
     GPIOPinConfigure(GPIO_PF1_SSI1TX);
     GPIOPinTypeSSI(GPIO_PORTF_BASE, GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_0 | GPIO_PIN_1);
-    SSIConfigSetExpClk(SSI1_BASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0, SSI_MODE_MASTER, SysCtlClockGet() / 2, 16);
+    SSIConfigSetExpClk(SSI1_BASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0, SSI_MODE_MASTER, 20000000, 16);
     SSIEnable(SSI1_BASE);
     while (SSIDataGetNonBlocking(SSI1_BASE, &ulDataRx[0])) {}
     DEBUG_PRINT("DAC control initialized\n", NULL);
