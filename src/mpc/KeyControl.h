@@ -27,5 +27,13 @@ extern unsigned char mpc_row_keys[NUM_KEY_ROWS];
 
 extern unsigned char mpc_col_keys[NUM_KEY_COLS];
 
+void add_key_sample(mpc_sample *sample);
+
+typedef struct MPC_KEY {
+    mpc_sample* sample;
+} mpc_key;
+
+mpc_key keys[NUM_KEY_COLS][NUM_KEY_ROWS];
+
 #endif	/* KEYCONTROL_H */
 

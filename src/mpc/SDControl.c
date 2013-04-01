@@ -20,18 +20,25 @@ void sd_init() {
     UARTprintf("SD card initialized\n", NULL);
 }
 
-void mpc_sample_open(mpc_sample *sample, char* wavname) {
-    f_open(&sample->file, "/mpc/groovy.wav", FA_OPEN_EXISTING | FA_READ);
+void mpc_sample_open(mpc_sample *sample) {
+    f_open(&sample->file, sample->fileName, FA_OPEN_EXISTING | FA_READ);
     f_read(&sample->file, &sample->header, sizeof sample->header, &sample->read_bytes);
+}
+
+void mpc_sample_reset(mpc_sample *sample) {
+    f_lseek(&sample->file, sizeof(sample->header));
 }
 
 void mpc_sample_load_next(mpc_sample *sample) {
     f_read(&sample->file, &sample->next_sample, sizeof sample->next_sample, &sample->read_bytes);
+    if(sizeof(sample->next_sample) != sample->read_bytes) {
+        mpc_sample_reset(sample);
+    }
 }
 
 void sd_read() {
     FRESULT res;
-    res = f_open(&file, "/mpc/lowfc.wav", FA_OPEN_EXISTING | FA_READ);
+    res = f_open(&file, "/mpc/avb.wav", FA_OPEN_EXISTING | FA_READ);
 
     wave_header wave_file;
 

@@ -22,7 +22,7 @@ void dac_setup() {
 void dac_put(int value) {
     int16_t write = 0;
     
-    write = 0x3FFF & value;
+    write = 0x0FFF & value;
     write = 0x3000 | write;
     // DEBUG_PRINT("Writing: %i\n", value);
 

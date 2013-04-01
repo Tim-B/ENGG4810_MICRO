@@ -29,7 +29,7 @@ typedef struct WAVE_HEADER {
 
 typedef struct WAVE_SAMPLE {
     unsigned char left;
-    unsigned char right;
+    // unsigned char right;
 } wave_sample;
 
 wave_header parse_header(BYTE* buffer);

@@ -24,8 +24,8 @@ void soundoutcontrol_setup() {
     //
     TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
     
-    //TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / ((1024 * 5)));
-    TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet());
+    TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / ((1000 * 44)));
+    // TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet());
 
     // TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / (1024 * 20));
 
@@ -39,15 +39,51 @@ void soundoutcontrol_setup() {
     // Enable the timers.
     //
     TimerEnable(TIMER0_BASE, TIMER_A);
+    
+    for (int i = 0; i < NUM_SAMPLES; i++) {
+        samples[i].in_use == false;
+    }
+    
     samples[0].in_use = true;
+    samples[0].fileName = "/mpc/1.wav";
+    
+    samples[1].in_use = true;
+    samples[1].fileName = "/mpc/2.wav";
+    
+    samples[2].in_use = true;
+    samples[2].fileName = "/mpc/3.wav";
+    
+    samples[3].in_use = true;
+    samples[3].fileName = "/mpc/4.wav";
+
+    samples[4].in_use = true;
+    samples[4].fileName = "/mpc/5.wav";
+
+    samples[5].in_use = true;
+    samples[5].fileName = "/mpc/6.wav";
+
+    samples[6].in_use = true;
+    samples[6].fileName = "/mpc/7.wav";
+
+    samples[7].in_use = true;
+    samples[7].fileName = "/mpc/8.wav";
+
+    samples[8].in_use = true;
+    samples[8].fileName = "/mpc/9.wav";    
+
+    
+    // samples[2].playing = true;
 
     for (int i = 0; i < NUM_SAMPLES; i++) {
         if (samples[i].in_use == true) {
-            setup_sample(&samples[i], "something.wav");
+            setup_sample(&samples[i]);
             UARTprintf("Sample rate: %i\n", samples[i].header.bitsPerSample);
-            UARTprintf("Sample setup %p\n", &samples[i]);
+            UARTprintf("Chanels: %i\n", samples[i].header.NumOfChan);
         }
+        add_key_sample(&samples[i]);
     }
+    
+    UARTprintf("Short: %i\n", sizeof(short));
 
     DEBUG_PRINT("Sound out control initialized\n", NULL);
 }
@@ -60,6 +96,7 @@ void checkSampleState() {
             if (samples[i].in_use == true) {
                 // UARTprintf("Sample check %i %p\n", i, &samples[i]);
                 check_waiting(&samples[i]);
+                check_reset_sample(&samples[i]);
             }
         }
         checkSamples = false;
@@ -67,14 +104,20 @@ void checkSampleState() {
 }
 
 void soundoutTimerHanlder(void) {
+    cnt++;
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
-   // sample = samples[0];
     
-    short val = read_sample(&samples[0]);
-    // UARTprintf("Tick: %i\n", val);
-    // scan_keys();
-    //dac_put(val);
+    short val = 0;
     
+    for (int i = 0; i < NUM_SAMPLES; i++) {
+        if (samples[i].playing == true) {
+            val += read_sample(&samples[i]);
+        }
+    }
+    
+    dac_put(val);
+    
+/*
     if(cnt) {
         dac_put(3000);
         cnt = 0;
@@ -82,5 +125,6 @@ void soundoutTimerHanlder(void) {
         dac_put(0);
         cnt = 1;
     }
+*/
     checkSamples = true;
 }

@@ -14,8 +14,9 @@ void sd_read();
 
 FRESULT sd_list(char* path);
 
-void mpc_sample_open(mpc_sample *sample, char* wavname);
+void mpc_sample_open(mpc_sample *sample);
 void mpc_sample_load_next(mpc_sample *sample);
+void mpc_sample_reset(mpc_sample *sample);
 
 #define PATH "/mpc"
 

@@ -17,12 +17,15 @@ typedef struct MPC_SAMPLE {
     FIL file;
     UINT read_bytes;
     bool in_use;
+    char* fileName;
+    bool needs_reset;
 } mpc_sample;
 
-void setup_sample(mpc_sample *sample, char* wavname);
-short read_sample(mpc_sample *sample);
+void setup_sample(mpc_sample *sample);
+unsigned short read_sample(mpc_sample *sample);
 void load_next_sample(mpc_sample *sample);
 void check_waiting(mpc_sample *sample);
+void check_reset_sample(mpc_sample *sample);
 
 #endif	/* SAMPLE_H */
 

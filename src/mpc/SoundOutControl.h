@@ -8,7 +8,7 @@
 #ifndef SOUNDOUTCONTROL_H
 #define	SOUNDOUTCONTROL_H
 
-#define NUM_SAMPLES 16
+#define NUM_SAMPLES 12
 
 void soundoutcontrol_setup();
 void soundoutTimerHanlder(void);
