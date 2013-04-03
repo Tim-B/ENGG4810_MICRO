@@ -70,6 +70,15 @@ void soundoutcontrol_setup() {
 
     samples[8].in_use = true;
     samples[8].fileName = "/mpc/9.wav";    
+    
+    samples[9].in_use = true;
+    samples[9].fileName = "/mpc/10.wav";    
+    
+    samples[10].in_use = true;
+    samples[10].fileName = "/mpc/11.wav";    
+    
+    samples[11].in_use = true;
+    samples[11].fileName = "/mpc/12.wav";    
 
     
     // samples[2].playing = true;
@@ -106,15 +115,17 @@ void checkSampleState() {
 void soundoutTimerHanlder(void) {
     cnt++;
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
-    
+    int total = 0;
+    int numSamples = 0;
     short val = 0;
     
     for (int i = 0; i < NUM_SAMPLES; i++) {
         if (samples[i].playing == true) {
-            val += read_sample(&samples[i]);
+            total += read_sample(&samples[i]);
+            numSamples++;
         }
     }
-    
+    val = total / numSamples;
     dac_put(val);
     
 /*
