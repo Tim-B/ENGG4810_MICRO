@@ -15,6 +15,7 @@ endif
 SRC           = $(wildcard src/third_party/**/*.c)
 SRC           += $(wildcard src/system/*.c)
 SRC           += $(wildcard src/mpc/*.c)
+SRC           += $(wildcard src/drivers/*.c)
 SRC           += $(STELLARISWARE)/utils/uartstdio.c
 
 TOOLCHAIN     = arm-none-eabi

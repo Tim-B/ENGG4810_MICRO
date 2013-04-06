@@ -8,6 +8,7 @@ void setup() {
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
 
     FPULazyStackingEnable();
     FPUEnable();
@@ -19,6 +20,7 @@ void setup() {
     keycontrol_setup();
     tick_setup();
     soundoutcontrol_setup();
+    setupADC();
     
     IntMasterEnable();
             
@@ -28,4 +30,5 @@ void setup() {
 void loop() {
     checkDebounce();
     checkSampleState();
+    checkVol();
 }

@@ -31,6 +31,7 @@ void tick_setup() {
 void sys_tick() {
     TimerIntClear(TIMER2_BASE, TIMER_TIMA_TIMEOUT);
     timestamp++;
+    
     // DEBUG_PRINT("Tick\n", NULL);
 }
 

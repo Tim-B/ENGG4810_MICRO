@@ -38,6 +38,7 @@
 #include "DACControl.h"
 #include "KeyControl.h"
 #include "systick.h"
+#include "../drivers/ADCDriver.h"
 
 // End Application Includes
 

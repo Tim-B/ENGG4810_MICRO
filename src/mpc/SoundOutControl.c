@@ -7,6 +7,8 @@ mpc_sample sample;
 
 bool checkSamples = false;
 
+int vol = 128;
+
 void soundoutcontrol_setup() {
     
     //
@@ -24,7 +26,7 @@ void soundoutcontrol_setup() {
     //
     TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
     
-    TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / ((1000 * 44)));
+    TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / 44100);
     // TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet());
 
     // TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / (1024 * 20));
@@ -51,7 +53,8 @@ void soundoutcontrol_setup() {
     samples[1].fileName = "/mpc/2.wav";
     
     samples[2].in_use = true;
-    samples[2].fileName = "/mpc/3.wav";
+    samples[2].fileName = "/mpc/avb.wav";
+    samples[2].playing = true;
     
     samples[3].in_use = true;
     samples[3].fileName = "/mpc/4.wav";
@@ -112,6 +115,10 @@ void checkSampleState() {
     }
 }
 
+void setVol(int newvol) {
+    vol = newvol;
+}
+
 void soundoutTimerHanlder(void) {
     cnt++;
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
@@ -126,6 +133,7 @@ void soundoutTimerHanlder(void) {
         }
     }
     val = total / numSamples;
+    val = (val * vol) / 128;
     dac_put(val);
     
 /*
