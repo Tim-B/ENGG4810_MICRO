@@ -35,7 +35,7 @@ CFLAGS = -mthumb -mcpu=$(CPU) -mfpu=$(FPU) -mfloat-abi=$(FABI)
 CFLAGS+= -Os -ffunction-sections -fdata-sections
 CFLAGS+= -MD -std=c99 -Wall -pedantic
 CFLAGS+= -DPART_$(PART) -c -DTARGET_IS_BLIZZARD_RA1
-CFLAGS+= -g -D DEBUG
+CFLAGS+= -g -D DEBUG -D gcc
 
 LIB_GCC_PATH=$(shell $(CC) $(CFLAGS) -print-libgcc-file-name)
 LIBC_PATH=$(shell $(CC) $(CFLAGS) -print-file-name=libc.a)
@@ -69,7 +69,7 @@ all: $(OBJS) $(TARGET).axf $(TARGET)
 $(TARGET).axf: $(OBJS)
 	@echo
 	@echo Linking...
-	$(LD) -T $(LINKER_FILE) $(LFLAGS) -o bin/$(TARGET).axf $(OBJS) $(DRIVER_LIB) $(LIBM_PATH) $(LIBC_PATH) $(LIB_GCC_PATH) $(CMSIS_LIB)
+	$(LD) -T $(LINKER_FILE) $(LFLAGS) -o bin/$(TARGET).axf $(OBJS) $(USB_LIB) $(DRIVER_LIB) $(LIBM_PATH) $(LIBC_PATH) $(LIB_GCC_PATH) $(CMSIS_LIB)
 
 $(TARGET): $(TARGET).axf
 	@echo
