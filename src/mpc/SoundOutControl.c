@@ -53,23 +53,23 @@ void soundoutcontrol_setup() {
     samples[1].fileName = "/mpc/2.wav";
     
     samples[2].in_use = true;
-    samples[2].fileName = "/mpc/avb.wav";
-    samples[2].playing = true;
+    samples[2].fileName = "/mpc/3.wav";
+    // samples[2].playing = true;
     
     samples[3].in_use = true;
-    samples[3].fileName = "/mpc/4.wav";
+    samples[3].fileName = "/mpc/sine.wav";
 
     samples[4].in_use = true;
-    samples[4].fileName = "/mpc/5.wav";
+    samples[4].fileName = "/mpc/style.wav";
 
     samples[5].in_use = true;
-    samples[5].fileName = "/mpc/6.wav";
+    samples[5].fileName = "/mpc/daft.wav";
 
     samples[6].in_use = true;
-    samples[6].fileName = "/mpc/7.wav";
+    samples[6].fileName = "/mpc/strobe.wav";
 
     samples[7].in_use = true;
-    samples[7].fileName = "/mpc/8.wav";
+    samples[7].fileName = "/mpc/black.wav";
 
     samples[8].in_use = true;
     samples[8].fileName = "/mpc/9.wav";    
@@ -133,7 +133,7 @@ void soundoutTimerHanlder(void) {
         }
     }
     val = total / numSamples;
-    val = (val * vol) / 128;
+    // val = (val * vol) / 128;
     dac_put(val);
     
 /*

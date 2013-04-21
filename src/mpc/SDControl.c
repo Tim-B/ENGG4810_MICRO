@@ -12,6 +12,7 @@ UINT br, bw;
 void sd_init() {
     FRESULT res;
     FILINFO fno;
+    UARTprintf("Looking for SD\n", NULL);
     while (disk_initialize(0));
     f_mount(0, &fso);
     //f_chdir(PATH);
