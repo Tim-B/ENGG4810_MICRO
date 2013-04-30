@@ -9,14 +9,7 @@ void setupUSBStore() {
     g_eMSCState = MSC_DEV_DISCONNECTED;
     SysCtlPeripheralEnable(SYSCTL_PERIPH_USB0);
     DEBUG_PRINT("USB2\n", NULL);
-    //
-    // Set the USB pins to be controlled by the USB controller.
-    //
-
-    GPIOPinTypeUSBDigital(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
-    DEBUG_PRINT("USB3\n", NULL);
     SysCtlPeripheralEnable(SYSCTL_PERIPH_UDMA);
-    SysCtlDelay(10);
     uDMAControlBaseSet(&uDMAControlTable[0]);
     uDMAEnable();
     GPIOPinTypeUSBAnalog(GPIO_PORTD_BASE, GPIO_PIN_5 | GPIO_PIN_4);
