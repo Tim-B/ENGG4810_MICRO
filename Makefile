@@ -13,6 +13,7 @@ else
 endif
 
 SRC           = $(wildcard src/third_party/**/*.c)
+SRC           += $(wildcard src/effects/*.c)
 SRC           += $(wildcard src/system/*.c)
 SRC           += $(wildcard src/mpc/*.c)
 SRC           += $(wildcard src/drivers/*.c)
@@ -21,8 +22,7 @@ SRC           += $(STELLARISWARE)/utils/uartstdio.c
 TOOLCHAIN     = arm-none-eabi
 PART          = LM4F120H5QR
 CPU           = cortex-m4
-FPU           = fpv4-sp-d16
-FABI          = softfp
+FPU           = -mfpu=fpv4-sp-d16 -mfloat-abi=softfp
 
 LINKER_FILE = src/system/engg.ld
 
@@ -31,11 +31,11 @@ LD = $(TOOLCHAIN)-ld
 CP = $(TOOLCHAIN)-objcopy
 OD = $(TOOLCHAIN)-objdump
 
-CFLAGS = -mthumb -mcpu=$(CPU) -mfpu=$(FPU) -mfloat-abi=$(FABI)
-CFLAGS+= -Os -ffunction-sections -fdata-sections
-CFLAGS+= -MD -std=c99 -Wall -pedantic
-CFLAGS+= -DPART_$(PART) -c -DTARGET_IS_BLIZZARD_RA1
-CFLAGS+= -g -D DEBUG -D gcc
+CFLAGS = -mthumb -mcpu=$(CPU) $(FPU)
+CFLAGS += -Os -ffunction-sections -fdata-sections
+CFLAGS += -MD -std=c99 -Wall -pedantic
+CFLAGS += -DPART_$(PART) -c -DTARGET_IS_BLIZZARD_RA1
+CFLAGS += -g -D DEBUG -D gcc
 
 LIB_GCC_PATH=$(shell $(CC) $(CFLAGS) -print-libgcc-file-name)
 LIBC_PATH=$(shell $(CC) $(CFLAGS) -print-file-name=libc.a)

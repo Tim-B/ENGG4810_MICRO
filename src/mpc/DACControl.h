@@ -9,7 +9,8 @@
 #define	DACCONTROL_H
 
 void dac_setup();
-void dac_put(int value);
+void dac_put();
+void queue_sample(float value);
 
 #endif	/* DACCONTROL_H */
 

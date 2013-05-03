@@ -14,6 +14,7 @@ void soundoutcontrol_setup();
 void soundoutTimerHanlder(void);
 void checkSampleState(void);
 void setVol(int newvol);
+void mix();
 
 mpc_sample samples[NUM_SAMPLES];
 

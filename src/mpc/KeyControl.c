@@ -59,11 +59,12 @@ void scan_keys() {
             // DEBUG_PRINT("Checking %i %i\n", r, c);
             sample = keys[r][c].sample;
             if (sample->in_use == true) {
-                DEBUG_PRINT("Sample active: %i %i\n", r, c);
+                //DEBUG_PRINT("Sample active: %i %i\n", r, c);
+                SysCtlDelay(5);
                 readVal = GPIOPinRead(GPIO_PORTD_BASE, mpc_col_keys[c]);
                 if (readVal) {
                     sample->playing = true;
-                    DEBUG_PRINT("Pressed %s\n", sample->fileName);
+                    //DEBUG_PRINT("Pressed %s\n", sample->fileName);
                 } else {
                     sample->playing = false;
                     sample->needs_reset = true;

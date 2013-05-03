@@ -49,6 +49,7 @@
 #include "systick.h"
 #include "../drivers/ADCDriver.h"
 #include "../drivers/USBStore.h"
+#include "../effects/EchoEffect.h"
 
 // End Application Includes
 

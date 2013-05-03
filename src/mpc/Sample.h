@@ -22,7 +22,7 @@ typedef struct MPC_SAMPLE {
 } mpc_sample;
 
 void setup_sample(mpc_sample *sample);
-unsigned short read_sample(mpc_sample *sample);
+float read_sample(mpc_sample *sample);
 void load_next_sample(mpc_sample *sample);
 void check_waiting(mpc_sample *sample);
 void check_reset_sample(mpc_sample *sample);

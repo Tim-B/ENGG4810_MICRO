@@ -13,13 +13,11 @@ void setup_sample(mpc_sample *sample) {
     sample->needs_reset = false;
 }
 
-unsigned short read_sample(mpc_sample *sample) {
-    unsigned short temp = 0;
-    temp = sample->next_sample.left;
-    temp = temp << 4;
+float read_sample(mpc_sample *sample) {
     sample->waiting = true;
-    return temp;
+    return sample->next_sample.left;
 }
+
 
 void load_next_sample(mpc_sample *sample) {
     mpc_sample_load_next(sample);
