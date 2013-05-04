@@ -30,10 +30,6 @@ typedef struct WAVE_HEADER {
     unsigned long Subchunk2Size;
 } wave_header;
 
-typedef struct WAVE_SAMPLE {
-     float left;
-} wave_sample;
-
 wave_header parse_header(BYTE* buffer);
 
 #endif	/* WAVHANDLER_H */

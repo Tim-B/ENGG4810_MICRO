@@ -9,6 +9,11 @@
 #include <stdbool.h>
 // End general includes
 
+// Constants
+#define M_PI 3.14159265358979323846
+#define NUM_BLOCK_SAMPLED 256
+// End Constants
+
 // Stellaris includes
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
@@ -50,10 +55,9 @@
 #include "../drivers/ADCDriver.h"
 #include "../drivers/USBStore.h"
 #include "../effects/EchoEffect.h"
-
+#include "../effects/EffectDefinitions.h"
+#include "SampleBlock.h"
 // End Application Includes
-
-#define M_PI 3.14159265358979323846
 
 // Debug
 #ifdef DEBUG

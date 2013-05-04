@@ -22,7 +22,9 @@ void setup() {
     soundoutcontrol_setup();
     setupADC();
     setupUSBStore();
-
+    initSampleBlocks();
+    
+    TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
     IntMasterEnable();
 
     DEBUG_PRINT("Setup complete\n", NULL);
@@ -30,7 +32,7 @@ void setup() {
 
 void loop() {
     checkDebounce();
-    checkSampleState();
+    checkSampleBlocks();
     checkVol();
     usbTask();
 }

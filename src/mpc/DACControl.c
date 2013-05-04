@@ -5,8 +5,6 @@
 #include "driverlib/ssi.h"
 #include "inc/hw_ssi.h"
 
-uint16_t waiting_sample = 0;
-
 void dac_setup() {
     unsigned long ulDataRx[NUM_SSI_DATA];
     SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI1);
@@ -21,23 +19,15 @@ void dac_setup() {
     DEBUG_PRINT("DAC control initialized\n", NULL);
 }
 
-void dac_put() {
-    
+void dac_put(float value) {
     int16_t write = 0;
-    
-    write = 0x0FFF & waiting_sample;
+    value = value * 0xFFF;
+    value = value / 2;
+    value += 0xFFF / 2;
+    write = 0x0FFF & (uint16_t) value;
     write = 0x3000 | write;
     // DEBUG_PRINT("Writing: %i\n", value);
 
     SSIDataPut(SSI1_BASE, write);
     while (SSIBusy(SSI1_BASE)) {}
-}
-
-void queue_sample(float value) {
-    value = value * 0xFFFF;
-    value = value / 2;
-    value += 0xFFFF / 2;
-    uint32_t uns = value;
-    uns = uns >> 4;
-    waiting_sample = (uint16_t) uns;
 }

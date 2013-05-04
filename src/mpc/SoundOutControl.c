@@ -1,8 +1,6 @@
 #include "global.h"
 #include "SoundOutControl.h"
 
-int cnt = 0;
-
 mpc_sample sample;
 
 bool checkSamples = false;
@@ -10,7 +8,6 @@ bool checkSamples = false;
 int vol = 128;
 
 void soundoutcontrol_setup() {
-
     //
     // Set the clocking to run directly from the crystal.
     //
@@ -35,7 +32,6 @@ void soundoutcontrol_setup() {
     // Setup the interrupts for the timer timeouts.
     //
     IntEnable(INT_TIMER0A);
-    TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
 
     //
     // Enable the timers.
@@ -54,11 +50,11 @@ void soundoutcontrol_setup() {
 
     samples[2].in_use = true;
     samples[2].fileName = "/mpc/sin_16.wav";
-    // samples[2].playing = true;
+    //samples[2].playing = true;
 
     samples[3].in_use = true;
     samples[3].fileName = "/mpc/style_16.wav";
-    samples[3].playing = true;
+    // samples[3].playing = true;
 
     samples[4].in_use = true;
     samples[4].fileName = "/mpc/style_16.wav";
@@ -67,13 +63,14 @@ void soundoutcontrol_setup() {
     samples[5].fileName = "/mpc/style_16.wav";
 
     samples[6].in_use = true;
-    samples[6].fileName = "/mpc/sin_16.wav";
+    samples[6].fileName = "/mpc/avb_16.wav";
 
     samples[7].in_use = true;
-    samples[7].fileName = "/mpc/sin_16.wav";
+    samples[7].fileName = "/mpc/avb_16.wav";
 
     samples[8].in_use = true;
-    samples[8].fileName = "/mpc/sin_16.wav";
+    samples[8].fileName = "/mpc/avb_16.wav";
+    samples[8].playing = true;
 
     samples[9].in_use = true;
     samples[9].fileName = "/mpc/sin_16.wav";
@@ -93,25 +90,7 @@ void soundoutcontrol_setup() {
         add_key_sample(&samples[i]);
     }
 
-    UARTprintf("Float: %i\n", sizeof (float));
-
     DEBUG_PRINT("Sound out control initialized\n", NULL);
-}
-
-void checkSampleState() {
-    if (checkSamples) {
-        mpc_sample sample;
-        for (int i = 0; i < NUM_SAMPLES; i++) {
-            sample = samples[i];
-            if (samples[i].in_use == true) {
-                // UARTprintf("Sample check %i %p\n", i, &samples[i]);
-                check_waiting(&samples[i]);
-                check_reset_sample(&samples[i]);
-            }
-        }
-        mix();
-        checkSamples = false;
-    }
 }
 
 void setVol(int newvol) {
@@ -119,29 +98,10 @@ void setVol(int newvol) {
 }
 
 void soundoutTimerHanlder(void) {
-    cnt++;
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
-    // UARTprintf("Tick\n", NULL);
-
-    // val = (val * vol) / 128;
-    dac_put();
-
-    checkSamples = true;
+    dac_put(readSample());
 }
 
-void mix() {
-    float total = 0;
-    int numSamples = 0;
-    float val = 0;
-
-    for (int i = 0; i < NUM_SAMPLES; i++) {
-        if (samples[i].playing == true) {
-            total += read_sample(&samples[i]);
-            // UARTprintf("Sample Val: %i %i \n", i, samples[i].next_sample.left);
-            numSamples++;
-        }
-    }
-    val = total / numSamples;
-    //val = applyEcho(val, 0.5, 7);
-    queue_sample(val);
+mpc_sample* getSampleByIndex(int i) {
+    return &samples[i];
 }
