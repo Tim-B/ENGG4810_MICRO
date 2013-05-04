@@ -54,7 +54,7 @@ void soundoutcontrol_setup() {
 
     samples[3].in_use = true;
     samples[3].fileName = "/mpc/style_16.wav";
-    // samples[3].playing = true;
+    //samples[3].playing = true;
 
     samples[4].in_use = true;
     samples[4].fileName = "/mpc/style_16.wav";

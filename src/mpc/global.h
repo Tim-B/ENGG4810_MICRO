@@ -59,6 +59,7 @@
 #include "KeyControl.h"
 #include "systick.h"
 #include "../effects/EffectDefinitions.h"
+#include "../effects/FilterHelp.h"
 #include "SampleBlock.h"
 #include "../drivers/ADCDriver.h"
 #include "../drivers/USBStore.h"

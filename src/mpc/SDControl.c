@@ -25,7 +25,7 @@ void mpc_sample_open(mpc_sample *sample) {
 }
 
 void mpc_sample_reset(mpc_sample *sample) {
-    f_lseek(&sample->file, sizeof(sample->header));
+    f_lseek(&sample->file, sizeof sample->header);
 }
 
 void mpc_sample_load_next(mpc_sample *sample) {
