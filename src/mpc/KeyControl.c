@@ -60,7 +60,7 @@ void scan_keys() {
             sample = keys[r][c].sample;
             if (sample->in_use == true) {
                 //DEBUG_PRINT("Sample active: %i %i\n", r, c);
-                SysCtlDelay(5);
+                SysCtlDelay(25);
                 readVal = GPIOPinRead(GPIO_PORTD_BASE, mpc_col_keys[c]);
                 if (readVal) {
                     sample->playing = true;

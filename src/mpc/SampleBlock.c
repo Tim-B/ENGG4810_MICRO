@@ -15,10 +15,13 @@ void initBlock(sample_block *block) {
 }
 
 void initSampleBlocks() {
+    lowPassInit();
+            
     initBlock(&blocks[0]);
     initBlock(&blocks[1]);
     blocks[0].current = true;
     playing_block = &blocks[0];
+    
     DEBUG_PRINT("Sample block initialized\n", NULL);
 }
 
@@ -49,6 +52,7 @@ void loadBlock(sample_block *block) {
         }
     }
     mixBlock(block);
+    lowPassApply(block);
     block->waiting = false;
     block->cursor = 0;
 }

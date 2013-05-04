@@ -35,19 +35,19 @@ CFLAGS = -mthumb -mcpu=$(CPU) $(FPU)
 CFLAGS += -Os -ffunction-sections -fdata-sections
 CFLAGS += -MD -std=c99 -Wall -pedantic
 CFLAGS += -DPART_$(PART) -c -DTARGET_IS_BLIZZARD_RA1
-CFLAGS += -g -D DEBUG -D gcc
+CFLAGS += -g -D DEBUG -D gcc -D ARM_MATH_CM4
 
 LIB_GCC_PATH=$(shell $(CC) $(CFLAGS) -print-libgcc-file-name)
 LIBC_PATH=$(shell $(CC) $(CFLAGS) -print-file-name=libc.a)
 LIBM_PATH=$(shell $(CC) $(CFLAGS) -print-file-name=libm.a)
 DRIVER_LIB=$(STELLARISWARE)/driverlib/gcc-cm4f/libdriver-cm4f.a
 USB_LIB=$(STELLARISWARE)/usblib/gcc-cm4f/libusb-cm4f.a
-# CMSIS_MATH=$(CMSIS)/CMSIS/Lib/GCC/libarm_cortexM4lf_math.a
-# CMSIS_LIB=$(CMSIS)/CMSIS/Lib/libdsplib_lm4f.a
+CMSIS_MATH=$(CMSIS)/CMSIS/Lib/GCC/libarm_cortexM4lf_math.a
+CMSIS_LIB=$(CMSIS)/CMSIS/Lib/libdsplib_lm4f.a
 
 CFLAGS+= -I$(STELLARISWARE) 
-# FLAGS+= -I$(CMSIS)/CMSIS/Include
-# CFLAGS+= -I$(CMSIS)/Device/ARM/ARMCM4/Include
+CFLAGS+= -I$(CMSIS)/CMSIS/Include
+CFLAGS+= -I$(CMSIS)/Device/ARM/ARMCM4/Include
 
 LFLAGS = --gc-sections --entry ResetISR
 CPFLAGS = -Obinary

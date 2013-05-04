@@ -11,8 +11,13 @@
 
 // Constants
 #define M_PI 3.14159265358979323846
-#define NUM_BLOCK_SAMPLED 256
+#define NUM_BLOCK_SAMPLED 64
 // End Constants
+
+// CMSIS includes
+#include <ARMCM4.h>
+#include <system_ARMCM4.h>
+// End CMSIS includes
 
 // Stellaris includes
 #include "inc/hw_memmap.h"
@@ -43,6 +48,7 @@
 // End Third Party Includes
 
 //Application Includes
+
 #include "uart.h"
 #include "WavHandler.h"
 #include "Sample.h"
@@ -52,11 +58,13 @@
 #include "DACControl.h"
 #include "KeyControl.h"
 #include "systick.h"
+#include "../effects/EffectDefinitions.h"
+#include "SampleBlock.h"
 #include "../drivers/ADCDriver.h"
 #include "../drivers/USBStore.h"
 #include "../effects/EchoEffect.h"
-#include "../effects/EffectDefinitions.h"
-#include "SampleBlock.h"
+#include "../effects/LowPass.h"
+
 // End Application Includes
 
 // Debug
