@@ -39,7 +39,7 @@ void mixBlock(sample_block *block) {
                 numSamps++;
             }
         }
-        block->data[i] = val / numSamps;
+        block->raw[i] = val / numSamps;
     }
 }
 

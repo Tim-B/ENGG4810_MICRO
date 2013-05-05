@@ -11,7 +11,7 @@
 
 // Constants
 #define M_PI 3.14159265358979323846
-#define NUM_BLOCK_SAMPLED 64
+#define NUM_BLOCK_SAMPLED 128
 // End Constants
 
 // CMSIS includes

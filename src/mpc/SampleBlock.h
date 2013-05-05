@@ -9,6 +9,7 @@
 #define	SAMPLEBLOCK_H
 
 #include "../mpc/global.h"
+#include "arm_math.h"
 
 typedef struct EFFECT_DATA {
     effect effect;
@@ -17,7 +18,8 @@ typedef struct EFFECT_DATA {
 } effect_data;
 
 typedef struct SAMPLE_BLOCK {
-    float data[NUM_BLOCK_SAMPLED];
+    float32_t data[NUM_BLOCK_SAMPLED];
+    float32_t raw[NUM_BLOCK_SAMPLED];
     int cursor;
     effect_data effects[2];
     bool current;

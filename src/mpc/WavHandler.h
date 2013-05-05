@@ -28,7 +28,7 @@ typedef struct WAVE_HEADER {
     unsigned short bitsPerSample;
     char Subchunk2ID[4];
     unsigned long Subchunk2Size;
-    float other[8];
+    float other[9];
 } wave_header;
 
 wave_header parse_header(BYTE* buffer);

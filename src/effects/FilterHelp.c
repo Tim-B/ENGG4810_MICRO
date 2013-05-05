@@ -62,7 +62,7 @@ void biquad_gen(BIQUAD_TYPE type, float* returnVar, int Fc, float Q) {
     returnVar[1] = b1 / a0;
     returnVar[2] = b2 / a0;
 
-    returnVar[3] = a1 / a0;
-    returnVar[4] = a2 / a0;
+    returnVar[3] = -1 * (a1 / a0);
+    returnVar[4] = -1 * (a2 / a0);
 
 }

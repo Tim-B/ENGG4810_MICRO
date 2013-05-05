@@ -24,7 +24,7 @@ void soundoutcontrol_setup() {
     TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
 
     TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / 44100);
-    // TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet());
+    //TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet());
 
     // TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet() / (1024 * 20));
 
