@@ -11,7 +11,6 @@
 void setupADC();
 int readADC();
 void ADCIntHandler(void);
-void checkVol();
 
 #endif	/* ADCDRIVER_H */
 

@@ -14,13 +14,6 @@ void setupADC() {
     DEBUG_PRINT("ADC initialized\n", NULL);
 }
 
-void checkVol() {
-    if (get_tick() > nextCheck) {
-        setVol(readADC());
-        nextCheck = get_tick() + 100;
-    }
-}
-
 int readADC() {
     unsigned long ulADC0_Value[1];
     int outval = 0;
