@@ -18,8 +18,8 @@ void biquad_gen(BIQUAD_TYPE type, float* returnVar, int Fc, float Q) {
 
     float w0 = 2 * M_PI * Fc / SAMPLE_RATE;
 
-    float c1 = arm_cos_f32(w0);
-    float alpha = arm_sin_f32(w0) / (2 * Q);
+    float c1 = cosf(w0);
+    float alpha = sinf(w0) / (2 * Q);
 
     float b0, b1, b2, a0, a1, a2;
 
