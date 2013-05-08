@@ -14,21 +14,31 @@ void setup() {
     FPUEnable();
 
     uart_setup();
-    
+
     sd_init();
     dac_setup();
     keycontrol_setup();
     tick_setup();
     soundoutcontrol_setup();
     setupADC();
+    setupUSBStore();
+    initSampleBlocks();
     
+    TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
     IntMasterEnable();
-            
+
     DEBUG_PRINT("Setup complete\n", NULL);
 }
 
 void loop() {
     checkDebounce();
-    checkSampleState();
-    checkVol();
+    checkSampleBlocks();
+    usbTask();
 }
+
+#ifdef DEBUG
+
+void __error__(char *pcFilename, unsigned long ulLine) {
+    DEBUG_PRINT("Error %s %i\n", pcFilename, ulLine);
+}
+#endif

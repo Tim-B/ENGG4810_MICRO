@@ -5,8 +5,6 @@ FATFS fso;
 DIR dir;
 FILINFO fileInfo;
 FIL file;
-BYTE buffer[WAV_HEADER_SIZE];
-wave_sample sample_buffer;
 UINT br, bw;
 
 void sd_init() {
@@ -27,28 +25,16 @@ void mpc_sample_open(mpc_sample *sample) {
 }
 
 void mpc_sample_reset(mpc_sample *sample) {
-    f_lseek(&sample->file, sizeof(sample->header));
+    f_lseek(&sample->file, sizeof sample->header);
 }
 
 void mpc_sample_load_next(mpc_sample *sample) {
-    f_read(&sample->file, &sample->next_sample, sizeof sample->next_sample, &sample->read_bytes);
-    if(sizeof(sample->next_sample) != sample->read_bytes) {
+    f_read(&sample->file, &sample->next_block, sizeof sample->next_block, &sample->read_bytes);
+    if(sizeof(sample->next_block) != sample->read_bytes) {
         mpc_sample_reset(sample);
     }
 }
 
-void sd_read() {
-    FRESULT res;
-    res = f_open(&file, "/mpc/avb.wav", FA_OPEN_EXISTING | FA_READ);
-
-    wave_header wave_file;
-
-    res = f_read(&file, &wave_file, sizeof wave_file, &br);
-
-
-    UARTprintf("Read: %i\n", wave_file.ChunkSize);
-    f_close(&file);
-}
 
 FRESULT sd_list(char* path) {
     FRESULT res;

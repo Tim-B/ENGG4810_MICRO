@@ -9,6 +9,16 @@
 #include <stdbool.h>
 // End general includes
 
+// Constants
+#define M_PI 3.14159265358979323846
+#define NUM_BLOCK_SAMPLED 128
+// End Constants
+
+// CMSIS includes
+#include <ARMCM4.h>
+#include <system_ARMCM4.h>
+// End CMSIS includes
+
 // Stellaris includes
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
@@ -20,15 +30,25 @@
 #include "driverlib/timer.h"
 #include "driverlib/interrupt.h"
 #include "driverlib/fpu.h"
+#include "usblib/usblib.h"
+#include "usblib/usb-ids.h"
+#include "driverlib/usb.h"
+#include "usblib/usblib.h"
+#include "usblib/device/usbdevice.h"
+#include "usblib/device/usbdmsc.h"
+#include "driverlib/udma.h"
 // End Stellaris includes
 
 // Third Party Includes
 #include "../third_party/fatfs/ff.h"
 #include "../third_party/fatfs/diskio.h"
 #include "../third_party/fatfs/integer.h"
+#include "../third_party/usbmsc/usb_msc_structs.h"
+#include "../third_party/usbmsc/usbdsdcard.h"
 // End Third Party Includes
 
 //Application Includes
+
 #include "uart.h"
 #include "WavHandler.h"
 #include "Sample.h"
@@ -38,11 +58,15 @@
 #include "DACControl.h"
 #include "KeyControl.h"
 #include "systick.h"
+#include "../effects/EffectDefinitions.h"
+#include "../effects/FilterHelp.h"
+#include "SampleBlock.h"
 #include "../drivers/ADCDriver.h"
+#include "../drivers/USBStore.h"
+#include "../effects/EchoEffect.h"
+#include "../effects/LowPass.h"
 
 // End Application Includes
-
-#define M_PI 3.14159265358979323846
 
 // Debug
 #ifdef DEBUG

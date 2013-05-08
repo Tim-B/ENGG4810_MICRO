@@ -11,9 +11,8 @@
 
 typedef struct MPC_SAMPLE {
     wave_header header;
-    wave_sample next_sample;
+    float next_block[NUM_BLOCK_SAMPLED];
     bool playing;
-    bool waiting;
     FIL file;
     UINT read_bytes;
     bool in_use;
@@ -22,9 +21,6 @@ typedef struct MPC_SAMPLE {
 } mpc_sample;
 
 void setup_sample(mpc_sample *sample);
-unsigned short read_sample(mpc_sample *sample);
-void load_next_sample(mpc_sample *sample);
-void check_waiting(mpc_sample *sample);
 void check_reset_sample(mpc_sample *sample);
 
 #endif	/* SAMPLE_H */

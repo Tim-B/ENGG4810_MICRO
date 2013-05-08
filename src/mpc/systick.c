@@ -23,7 +23,7 @@ void tick_setup() {
     //
     // Enable the timers.
     //
-    TimerEnable(TIMER2_BASE, TIMER_A);
+    // TimerEnable(TIMER2_BASE, TIMER_A);
 
     DEBUG_PRINT("System tick initialized\n", NULL);
 }

@@ -19,10 +19,12 @@ void dac_setup() {
     DEBUG_PRINT("DAC control initialized\n", NULL);
 }
 
-void dac_put(int value) {
+void dac_put(float value) {
     int16_t write = 0;
-    
-    write = 0x0FFF & value;
+    value = value * 0xFFF;
+    value = value / 2;
+    value += 0xFFF / 2;
+    write = 0x0FFF & (uint16_t) value;
     write = 0x3000 | write;
     // DEBUG_PRINT("Writing: %i\n", value);
 

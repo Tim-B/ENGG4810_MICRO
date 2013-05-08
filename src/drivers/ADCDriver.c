@@ -14,14 +14,7 @@ void setupADC() {
     DEBUG_PRINT("ADC initialized\n", NULL);
 }
 
-void checkVol() {
-    if (get_tick() > nextCheck) {
-        setVol(readADC());
-        nextCheck = get_tick() + 100;
-    }
-}
-
-int readADC() {
+char readADC() {
     unsigned long ulADC0_Value[1];
     int outval = 0;
     ADCProcessorTrigger(ADC0_BASE, 3);
@@ -30,6 +23,12 @@ int readADC() {
     ADCIntClear(ADC0_BASE, 3);
     ADCSequenceDataGet(ADC0_BASE, 3, ulADC0_Value);
     outval = ulADC0_Value[0] / 32;
+    if(outval > 128) {
+        return 128;
+    }
+    if(outval < 0) {
+        return 0;
+    }
     // DEBUG_PRINT("ADC val: %i\n", outval);
     return outval;
 }

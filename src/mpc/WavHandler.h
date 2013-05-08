@@ -8,8 +8,11 @@
 #ifndef WAVHANDLER_H
 #define	WAVHANDLER_H
 
+#include "global.h"
+#include <ctype.h>
+
 #define WAV_HEADER_SIZE 40
-#define WAV_SAMPLE_SIZE 16
+#define WAV_SAMPLE_SIZE 32
 
 typedef struct WAVE_HEADER {
     char RIFF[4];
@@ -25,12 +28,8 @@ typedef struct WAVE_HEADER {
     unsigned short bitsPerSample;
     char Subchunk2ID[4];
     unsigned long Subchunk2Size;
+    float other[9];
 } wave_header;
-
-typedef struct WAVE_SAMPLE {
-    unsigned char left;
-    // unsigned char right;
-} wave_sample;
 
 wave_header parse_header(BYTE* buffer);
 

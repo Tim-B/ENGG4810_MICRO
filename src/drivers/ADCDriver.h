@@ -9,9 +9,8 @@
 #define	ADCDRIVER_H
 
 void setupADC();
-int readADC();
+char readADC();
 void ADCIntHandler(void);
-void checkVol();
 
 #endif	/* ADCDRIVER_H */
 
