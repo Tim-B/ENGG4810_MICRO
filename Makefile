@@ -7,7 +7,7 @@ else
     UNAME_S := $(shell uname -s)
     ifeq ($(UNAME_S),Darwin)
         STELLARISWARE = /Users/timbell/arm-dev/stellarisware
-	CMSIS = /Users/timbell/arm-dev/cmsis/CMSIS
+	CMSIS = /Users/timbell/arm-dev/cmsis
 	FLASHER=lm4flash
     endif
 endif
