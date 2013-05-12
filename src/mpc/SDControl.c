@@ -29,14 +29,12 @@ void mpc_sample_reset(mpc_sample *sample) {
     //DEBUG_PRINT("Reset: %s \n", sample->fileName);
 }
 
-float mpc_sample_load_next(mpc_sample *sample) {
-    float val = 0;
-    f_read(&sample->file, &val, sizeof(val), &sample->read_bytes);
-    if(sizeof(val) != sample->read_bytes) {
+void mpc_sample_load_next(mpc_sample *sample, float *buffer) {
+    f_read(&sample->file, buffer, sizeof(float) * NUM_BLOCK_SAMPLED, &sample->read_bytes);
+    if((sizeof(float) * NUM_BLOCK_SAMPLED) != sample->read_bytes) {
         mpc_sample_reset(sample);
         trigger_sample_event(RESET, sample);
     }
-    return val;
 }
 
 

@@ -25,6 +25,7 @@ typedef enum {
     KEY_ON,
     KEY_OFF,
     RESET,
+    LOOP_PRESS,
 } sample_event;
 
 void setup_sample(mpc_sample *sample);

@@ -32,7 +32,7 @@ CP = $(TOOLCHAIN)-objcopy
 OD = $(TOOLCHAIN)-objdump
 
 CFLAGS = -mthumb -mcpu=$(CPU) $(FPU)
-CFLAGS += -Os -ffunction-sections -fdata-sections
+CFLAGS += -ffunction-sections -fdata-sections
 CFLAGS += -MD -std=c99 -Wall -pedantic
 CFLAGS += -DPART_$(PART) -c -DTARGET_IS_BLIZZARD_RA1
 CFLAGS += -g -D DEBUG -D gcc -D ARM_MATH_CM4

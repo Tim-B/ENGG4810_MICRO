@@ -14,10 +14,14 @@ void keycontrol_setup() {
     GPIOPinTypeGPIOOutput(GPIO_PORTC_BASE, HIGH_PINS);
     GPIOPinWrite(GPIO_PORTC_BASE, HIGH_PINS, HIGH_PINS);
     GPIOPinTypeGPIOInput(GPIO_PORTD_BASE, LOW_PINS);
+    
+    // GPIOPadConfigSet(GPIO_PORTD_BASE, LOW_PINS, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_OD_WPU);
+    
+    GPIOPinTypeGPIOInput(GPIO_PORTB_BASE, GPIO_PIN_0);
 
-    GPIOIntTypeSet(GPIO_PORTD_BASE, LOW_PINS, GPIO_BOTH_EDGES);
-    GPIOPinIntEnable(GPIO_PORTD_BASE, LOW_PINS);
-    GPIOPortIntRegister(GPIO_PORTD_BASE, keypressHanlder);
+    //GPIOIntTypeSet(GPIO_PORTD_BASE, LOW_PINS, GPIO_BOTH_EDGES);
+    //GPIOPinIntEnable(GPIO_PORTD_BASE, LOW_PINS);
+    //GPIOPortIntRegister(GPIO_PORTD_BASE, keypressHanlder);
     DEBUG_PRINT("Keypad control initialized\n", NULL);
 }
 
@@ -52,6 +56,7 @@ void checkDebounce() {
 
 void scan_keys() {
     int readVal = 0;
+    bool loopPressed = GPIOPinRead(GPIO_PORTB_BASE, GPIO_PIN_0);
     mpc_sample *sample;
     for (int r = 0; r < NUM_KEY_ROWS; r++) {
         GPIOPinWrite(GPIO_PORTC_BASE, HIGH_PINS, 0 | mpc_row_keys[r]);
@@ -64,7 +69,10 @@ void scan_keys() {
                 readVal = GPIOPinRead(GPIO_PORTD_BASE, mpc_col_keys[c]);
                 if (readVal) {
                     trigger_sample_event(KEY_ON, sample);
-                    // DEBUG_PRINT("Sample active: %i %i\n", r, c);
+                    if(loopPressed) {
+                        // DEBUG_PRINT("Loop pressed\n", NULL);
+                        trigger_sample_event(LOOP_PRESS, sample);
+                    }
                 } else {
                     trigger_sample_event(KEY_OFF, sample);
                 }

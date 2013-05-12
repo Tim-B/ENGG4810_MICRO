@@ -1,6 +1,5 @@
 #include "../system/global.h"
 
-
 void setup_sample(mpc_sample *sample) {
     mpc_sample_open(sample);
     sample->needs_reset = false;
@@ -17,11 +16,17 @@ void check_reset_sample(mpc_sample *sample) {
 }
 
 void trigger_sample_event(sample_event event, mpc_sample *sample) {
-    mpc_sample *sample2 = getSampleByIndex(2);
+    
+    if(event == LOOP_PRESS) {
+        if(sample->loop) {
+            sample->loop = false;
+        } else {
+            sample->loop = true;
+        }
+    }
+    
     if(event == KEY_ON) {
         sample->playing = true;
-        //sample2->playing = true;
-        //DEBUG_PRINT("Playing %s\n", sample->fileName);
     }
     
     if(event == KEY_OFF) {
@@ -34,8 +39,9 @@ void trigger_sample_event(sample_event event, mpc_sample *sample) {
     }
     
     if(event == RESET) {
-        if(!sample->latch && !sample->loop) {
+        if(!sample->loop) {
             sample->playing = false;
         }
     }
+    
 }

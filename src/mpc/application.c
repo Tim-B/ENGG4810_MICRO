@@ -6,6 +6,7 @@ void setup() {
 
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
@@ -31,9 +32,9 @@ void setup() {
 }
 
 void loop() {
-    checkDebounce();
+    //checkDebounce();
     checkSampleBlocks();
-    usbTask();
+    //usbTask();
 }
 
 #ifdef DEBUG

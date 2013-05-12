@@ -98,8 +98,8 @@ void soundoutcontrol_setup() {
         }
         add_key_sample(&samples[i]);
     }
-    //samples[1].playing = true;
-    //samples[2].playing = true;
+    // samples[15].playing = true;
+    // samples[6].playing = true;
     DEBUG_PRINT("Sound out control initialized\n", NULL);
 }
 
