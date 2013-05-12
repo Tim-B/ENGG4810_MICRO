@@ -8,7 +8,7 @@
 #ifndef SAMPLEBLOCK_H
 #define	SAMPLEBLOCK_H
 
-#include "../mpc/global.h"
+#include "../mpc/../system/global.h"
 #include "arm_math.h"
 
 typedef struct EFFECT_DATA {

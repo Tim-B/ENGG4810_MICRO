@@ -1,7 +1,7 @@
-#include "global.h"
+#include "../system/global.h"
 
 unsigned char mpc_row_keys[] = {GPIO_PIN_4, GPIO_PIN_5, GPIO_PIN_6, GPIO_PIN_7};
-unsigned char mpc_col_keys[] = {GPIO_PIN_0, GPIO_PIN_1, GPIO_PIN_2};
+unsigned char mpc_col_keys[] = {GPIO_PIN_0, GPIO_PIN_1, GPIO_PIN_2, GPIO_PIN_3};
 
 bool bounce_hold = 0;
 int debounce_target = 0;
@@ -38,7 +38,7 @@ void add_key_sample(mpc_sample *sample) {
 void keypressHanlder(void) {
     GPIOPinIntClear(GPIO_PORTD_BASE, LOW_PINS);
     if (!bounce_hold) {
-        scan_keys();
+        // scan_keys();
         bounce_hold = true;
         debounce_target = get_tick() + DEBOUNCE_DELAY;
     }
@@ -56,18 +56,17 @@ void scan_keys() {
     for (int r = 0; r < NUM_KEY_ROWS; r++) {
         GPIOPinWrite(GPIO_PORTC_BASE, HIGH_PINS, 0 | mpc_row_keys[r]);
         for (int c = 0; c < NUM_KEY_COLS; c++) {
-            // DEBUG_PRINT("Checking %i %i\n", r, c);
+            //DEBUG_PRINT("Checking %i %i\n", r, c);
             sample = keys[r][c].sample;
             if (sample->in_use == true) {
-                //DEBUG_PRINT("Sample active: %i %i\n", r, c);
-                SysCtlDelay(25);
+                // DEBUG_PRINT("Sample active: %i %i\n", r, c);
+                // SysCtlDelay(25);
                 readVal = GPIOPinRead(GPIO_PORTD_BASE, mpc_col_keys[c]);
                 if (readVal) {
-                    sample->playing = true;
-                    //DEBUG_PRINT("Pressed %s\n", sample->fileName);
+                    trigger_sample_event(KEY_ON, sample);
+                    // DEBUG_PRINT("Sample active: %i %i\n", r, c);
                 } else {
-                    sample->playing = false;
-                    sample->needs_reset = true;
+                    trigger_sample_event(KEY_OFF, sample);
                 }
             }
         }

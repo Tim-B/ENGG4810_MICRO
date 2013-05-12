@@ -1,4 +1,4 @@
-#include "../mpc/global.h"
+#include "../mpc/../system/global.h"
 
 static unsigned long g_ulFlags;
 static unsigned long g_ulIdleTimeout;

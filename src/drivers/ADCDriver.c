@@ -1,4 +1,4 @@
-#include "../mpc/global.h"
+#include "../mpc/../system/global.h"
 #include "driverlib/adc.h"
 #define ADC_SEQUENCER_LENGTH 1
 

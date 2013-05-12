@@ -1,4 +1,4 @@
-#include "global.h"
+#include "../system/global.h"
 
 int timestamp = 0;
 
@@ -23,7 +23,7 @@ void tick_setup() {
     //
     // Enable the timers.
     //
-    // TimerEnable(TIMER2_BASE, TIMER_A);
+    TimerEnable(TIMER2_BASE, TIMER_A);
 
     DEBUG_PRINT("System tick initialized\n", NULL);
 }
@@ -31,8 +31,6 @@ void tick_setup() {
 void sys_tick() {
     TimerIntClear(TIMER2_BASE, TIMER_TIMA_TIMEOUT);
     timestamp++;
-    
-    // DEBUG_PRINT("Tick\n", NULL);
 }
 
 int get_tick() {

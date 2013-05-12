@@ -1,4 +1,4 @@
-#include "global.h"
+#include "../system/global.h"
 
 wave_header temp;
 

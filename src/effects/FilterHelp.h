@@ -8,7 +8,7 @@
 #ifndef FILTERHELP_H
 #define	FILTERHELP_H
 
-#include "../mpc/global.h"
+#include "../mpc/../system/global.h"
 
 typedef enum {
     LPF,

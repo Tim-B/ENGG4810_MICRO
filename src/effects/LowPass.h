@@ -8,7 +8,7 @@
 #ifndef LOWPASS_H
 #define	LOWPASS_H
 
-#include "../mpc/global.h"
+#include "../mpc/../system/global.h"
 
 void lowPassInit();
 void lowPassApply(sample_block *block);

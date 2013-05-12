@@ -7,7 +7,7 @@
 
 #ifndef UART_H
 #define	UART_H
-#include "global.h"
+#include "../system/global.h"
 
 void uart_setup();
 

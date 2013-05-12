@@ -24,7 +24,7 @@
 
 #include "inc/hw_nvic.h"
 #include "inc/hw_types.h"
-#include "../mpc/global.h"
+#include "../system/global.h"
 
 
 //*****************************************************************************

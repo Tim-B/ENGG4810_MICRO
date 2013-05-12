@@ -1,6 +1,6 @@
 #define NUM_SSI_DATA 3
 
-#include "global.h"
+#include "../system/global.h"
 #include "DACControl.h"
 #include "driverlib/ssi.h"
 #include "inc/hw_ssi.h"

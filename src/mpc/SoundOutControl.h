@@ -7,8 +7,8 @@
 
 #ifndef SOUNDOUTCONTROL_H
 #define	SOUNDOUTCONTROL_H
-#include "global.h"
-#define NUM_SAMPLES 12
+#include "../system/global.h"
+#define NUM_SAMPLES 16
 
 void soundoutcontrol_setup();
 void soundoutTimerHanlder(void);

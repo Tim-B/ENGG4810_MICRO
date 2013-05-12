@@ -1,4 +1,4 @@
-#include "global.h"
+#include "../system/global.h"
 #include "application.h"
 
 void setup() {

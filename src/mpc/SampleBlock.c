@@ -1,4 +1,4 @@
-#include "../mpc/global.h"
+#include "../mpc/../system/global.h"
 #include "SampleBlock.h"
 
 #define NUM_BLOCKS 2
@@ -11,6 +11,10 @@ void initBlock(sample_block *block) {
     block->current = false;
     block->cursor = 0;
     block->waiting = true;
+    for (int i = 0; i < NUM_BLOCK_SAMPLED; i++) {
+        block->data[i] = 0;
+        block->raw[i] = 0;
+    }
     loadBlock(block);
 }
 
@@ -35,7 +39,8 @@ void mixBlock(sample_block *block) {
         for (int j = 0; j < NUM_SAMPLES; j++) {
             sample = getSampleByIndex(j);
             if (sample->playing == true) {
-                val += sample->next_block[i];
+                // DEBUG_PRINT("Sample: %s\n", sample->fileName);
+                val += mpc_sample_load_next(sample);
                 numSamps++;
             }
         }
@@ -45,12 +50,7 @@ void mixBlock(sample_block *block) {
 
 void loadBlock(sample_block *block) {
     mpc_sample *sample;
-    for (int i = 0; i < NUM_SAMPLES; i++) {
-        sample = getSampleByIndex(i);
-        if (sample->playing == true) {
-            mpc_sample_load_next(sample);
-        }
-    }
+    scan_keys();
     mixBlock(block);
     lowPassApply(block);
     block->waiting = false;

@@ -1,4 +1,4 @@
-#include "global.h"
+#include "../system/global.h"
 #include <string.h>
 
 FATFS fso;
@@ -26,13 +26,17 @@ void mpc_sample_open(mpc_sample *sample) {
 
 void mpc_sample_reset(mpc_sample *sample) {
     f_lseek(&sample->file, sizeof sample->header);
+    //DEBUG_PRINT("Reset: %s \n", sample->fileName);
 }
 
-void mpc_sample_load_next(mpc_sample *sample) {
-    f_read(&sample->file, &sample->next_block, sizeof sample->next_block, &sample->read_bytes);
-    if(sizeof(sample->next_block) != sample->read_bytes) {
+float mpc_sample_load_next(mpc_sample *sample) {
+    float val = 0;
+    f_read(&sample->file, &val, sizeof(val), &sample->read_bytes);
+    if(sizeof(val) != sample->read_bytes) {
         mpc_sample_reset(sample);
+        trigger_sample_event(RESET, sample);
     }
+    return val;
 }
 
 

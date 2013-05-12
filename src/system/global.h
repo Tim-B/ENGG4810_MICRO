@@ -11,7 +11,7 @@
 
 // Constants
 #define M_PI 3.14159265358979323846
-#define NUM_BLOCK_SAMPLED 128
+#define NUM_BLOCK_SAMPLED 900
 // End Constants
 
 // CMSIS includes
@@ -48,19 +48,18 @@
 // End Third Party Includes
 
 //Application Includes
-
-#include "uart.h"
-#include "WavHandler.h"
-#include "Sample.h"
-#include "SDControl.h"
-#include "application.h"
-#include "SoundOutControl.h"
-#include "DACControl.h"
-#include "KeyControl.h"
-#include "systick.h"
+#include "../mpc/uart.h"
+#include "../mpc/WavHandler.h"
+#include "../mpc/Sample.h"
+#include "../mpc/SDControl.h"
+#include "../mpc/application.h"
+#include "../mpc/SoundOutControl.h"
+#include "../mpc/DACControl.h"
+#include "../drivers/KeyControl.h"
+#include "../mpc/systick.h"
 #include "../effects/EffectDefinitions.h"
 #include "../effects/FilterHelp.h"
-#include "SampleBlock.h"
+#include "../mpc/SampleBlock.h"
 #include "../drivers/ADCDriver.h"
 #include "../drivers/USBStore.h"
 #include "../effects/EchoEffect.h"

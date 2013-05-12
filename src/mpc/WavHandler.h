@@ -8,7 +8,7 @@
 #ifndef WAVHANDLER_H
 #define	WAVHANDLER_H
 
-#include "global.h"
+#include "../system/global.h"
 #include <ctype.h>
 
 #define WAV_HEADER_SIZE 40
