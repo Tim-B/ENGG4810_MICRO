@@ -8,10 +8,11 @@
 #ifndef LOWPASS_H
 #define	LOWPASS_H
 
-#include "../mpc/../system/global.h"
+#include "../system/global.h"
+#include "FilterHelp.h"
 
-void lowPassInit();
-void lowPassApply(sample_block *block);
+void iirInit();
+void iirApply(BIQUAD_TYPE type, sample_block *block, effect_data *effect);
 
 #endif	/* LOWPASS_H */
 

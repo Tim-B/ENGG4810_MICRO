@@ -9,7 +9,7 @@
 #define	ADCDRIVER_H
 
 void setupADC();
-char readADC();
+void readADC(sample_block *block);
 void ADCIntHandler(void);
 
 #endif	/* ADCDRIVER_H */

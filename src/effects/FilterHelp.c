@@ -1,4 +1,4 @@
-#include "FilterHelp.h"
+#include "../system/global.h"
 #include <arm_math.h>
 
 /**
@@ -13,8 +13,6 @@
  */
 
 void biquad_gen(BIQUAD_TYPE type, float* returnVar, int Fc, float Q) {
-
-    biquad_coef data;
 
     float w0 = 2 * M_PI * Fc / SAMPLE_RATE;
 

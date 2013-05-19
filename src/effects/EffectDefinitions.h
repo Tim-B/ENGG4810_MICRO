@@ -10,8 +10,12 @@
 typedef enum {
     LOW_PASS,
     HIGH_PASS,
-    ECHO,
-    DELAY,
+    NOTCH_PASS,
+    BAND_PASS,
+    BITCRUSH_DECIMATE,
+    KO,
+    ECHO_DELAY,
+    NONE,
 } effect;
 
 #endif	/* EFFECTDEFINITIONS_H */

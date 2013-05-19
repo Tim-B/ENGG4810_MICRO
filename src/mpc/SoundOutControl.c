@@ -43,52 +43,52 @@ void soundoutcontrol_setup() {
     }
 
     samples[0].in_use = true;
-    samples[0].fileName = "/mpc/1.wav";
+    samples[0].fileName = "/mpc/0.wav";
 
     samples[1].in_use = true;
-    samples[1].fileName = "/mpc/2.wav";
+    samples[1].fileName = "/mpc/1.wav";
 
     samples[2].in_use = true;
-    samples[2].fileName = "/mpc/3.wav";
+    samples[2].fileName = "/mpc/2.wav";
 
     samples[3].in_use = true;
-    samples[3].fileName = "/mpc/4.wav";
+    samples[3].fileName = "/mpc/3.wav";
 
     samples[4].in_use = true;
-    samples[4].fileName = "/mpc/5.wav";
+    samples[4].fileName = "/mpc/4.wav";
 
     samples[5].in_use = true;
-    samples[5].fileName = "/mpc/6.wav";
+    samples[5].fileName = "/mpc/5.wav";
 
     samples[6].in_use = true;
-    samples[6].fileName = "/mpc/7.wav";
+    samples[6].fileName = "/mpc/6.wav";
 
     samples[7].in_use = true;
-    samples[7].fileName = "/mpc/8.wav";
+    samples[7].fileName = "/mpc/7.wav";
 
     samples[8].in_use = true;
-    samples[8].fileName = "/mpc/9.wav";
+    samples[8].fileName = "/mpc/8.wav";
 
     samples[9].in_use = true;
-    samples[9].fileName = "/mpc/10.wav";
+    samples[9].fileName = "/mpc/9.wav";
 
     samples[10].in_use = true;
-    samples[10].fileName = "/mpc/11.wav";
+    samples[10].fileName = "/mpc/10.wav";
 
     samples[11].in_use = true;
-    samples[11].fileName = "/mpc/12.wav";
+    samples[11].fileName = "/mpc/11.wav";
     
     samples[12].in_use = true;
-    samples[12].fileName = "/mpc/sin.wav";
+    samples[12].fileName = "/mpc/12.wav";
     
     samples[13].in_use = true;
-    samples[13].fileName = "/mpc/style.wav";
+    samples[13].fileName = "/mpc/13.wav";
     
     samples[14].in_use = true;
-    samples[14].fileName = "/mpc/avb.wav";
+    samples[14].fileName = "/mpc/14.wav";
     
     samples[15].in_use = true;
-    samples[15].fileName = "/mpc/avb.wav";
+    samples[15].fileName = "/mpc/15.wav";
 
     for (int i = 0; i < NUM_SAMPLES; i++) {
         if (samples[i].in_use == true) {
@@ -109,7 +109,7 @@ void setVol(int newvol) {
 
 void soundoutTimerHanlder(void) {
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
-    dac_put(readSample());
+    dac_put(getOutput());
 }
 
 mpc_sample* getSampleByIndex(int i) {

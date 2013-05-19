@@ -13,6 +13,8 @@ void initBlock(sample_block *block) {
     block->current = false;
     block->cursor = 0;
     block->waiting = true;
+    block->effects[0].effect = NONE;
+    block->effects[1].effect = NONE;
     for (int i = 0; i < NUM_BLOCK_SAMPLED; i++) {
         block->data[i] = 0;
         block->raw[i] = 0;
@@ -21,7 +23,7 @@ void initBlock(sample_block *block) {
 }
 
 void initSampleBlocks() {
-    lowPassInit();
+    iirInit();
 
     initBlock(&blocks[0]);
     initBlock(&blocks[1]);
@@ -48,18 +50,22 @@ void mixBlock(sample_block *block) {
         arm_add_f32(&buffer[0], &buffer[1], &temp[0], NUM_BLOCK_SAMPLED);
         arm_scale_f32(&temp[0], 0.5f, &block->raw, NUM_BLOCK_SAMPLED);
     } else if(numSamps == 1) {
-        arm_scale_f32(&buffer[0], 1.0f, &block->raw, NUM_BLOCK_SAMPLED);
+        arm_copy_f32 (&buffer[0], &block->raw, NUM_BLOCK_SAMPLED);
     } else {
-        arm_scale_f32(&buffer[0], 0.0f, &block->raw, NUM_BLOCK_SAMPLED);
+        arm_fill_f32 (0.0f, &block->raw, NUM_BLOCK_SAMPLED);
     }
-    
+    // arm_scale_f32(&block->raw, 0.8f, &block->raw, NUM_BLOCK_SAMPLED);
 }
 
 void loadBlock(sample_block *block) {
-    mpc_sample *sample;
     scan_keys();
     mixBlock(block);
-    lowPassApply(block);
+    readADC(block);
+    arm_copy_f32 (&block->raw, &block->data, NUM_BLOCK_SAMPLED);
+    //decimateApply(block, &block->effects[0]);
+    //iirApply(HPF, block, &block->effects[0]);
+    //arm_copy_f32 (&block->data, &block->raw, NUM_BLOCK_SAMPLED);
+    //iirApply(LPF, block, &block->effects[1]);
     block->waiting = false;
     block->cursor = 0;
 }
@@ -86,6 +92,26 @@ float readSample() {
         index = 0;
     }
     return playing_block->data[index];
+}
+
+int getOutput() {
+    effect_data *effect;
+    float value = readSample();
+    value = value * 0xFFF;
+    value = value / 2;
+    value += 0xFFF / 2;
+    int out = (int) value;
+
+    for(int i = 0; i < 2; i++) {
+        effect = &playing_block->effects[i];
+        if(effect->effect == KO) {
+            out = applyKO(out, effect);
+        }
+        if(effect->effect == BITCRUSH_DECIMATE) {
+            out = applyDecimate(out, effect);
+        }
+    }
+    return out;
 }
 
 void checkSampleBlocks() {

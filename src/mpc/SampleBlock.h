@@ -13,8 +13,8 @@
 
 typedef struct EFFECT_DATA {
     effect effect;
-    char paramX;
-    char paramY;
+    float paramX;
+    float paramY;
 } effect_data;
 
 typedef struct SAMPLE_BLOCK {
@@ -30,6 +30,7 @@ void initSampleBlocks();
 void loadBlock(sample_block *block);
 float readSample();
 void checkSampleBlocks();
+int getOutput();
 
 #endif	/* SAMPLEBLOCK_H */
 

@@ -63,7 +63,9 @@
 #include "../drivers/ADCDriver.h"
 #include "../drivers/USBStore.h"
 #include "../effects/EchoEffect.h"
-#include "../effects/LowPass.h"
+#include "../effects/IIRFilter.h"
+#include "../effects/DecimateEffect.h"
+#include "../effects/KOEffect.h"
 
 // End Application Includes
 
