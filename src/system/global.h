@@ -48,16 +48,17 @@
 // End Third Party Includes
 
 //Application Includes
+#include "../effects/EffectDefinitions.h"
 #include "../mpc/uart.h"
 #include "../mpc/WavHandler.h"
 #include "../mpc/Sample.h"
+#include "../mpc/SoundOutControl.h"
+#include "../mpc/Config.h"
 #include "../mpc/SDControl.h"
 #include "../mpc/application.h"
-#include "../mpc/SoundOutControl.h"
 #include "../mpc/DACControl.h"
 #include "../drivers/KeyControl.h"
 #include "../mpc/systick.h"
-#include "../effects/EffectDefinitions.h"
 #include "../effects/FilterHelp.h"
 #include "../mpc/SampleBlock.h"
 #include "../drivers/ADCDriver.h"

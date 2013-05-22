@@ -20,10 +20,12 @@ void setup() {
     dac_setup();
     keycontrol_setup();
     tick_setup();
+    initConfig();
     soundoutcontrol_setup();
     setupADC();
     setupUSBStore();
     initSampleBlocks();
+    
     
     TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
     IntMasterEnable();

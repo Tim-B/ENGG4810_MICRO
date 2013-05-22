@@ -6,6 +6,7 @@ DIR dir;
 FILINFO fileInfo;
 FIL file;
 UINT br, bw;
+FIL confFile;
 
 void sd_init() {
     FRESULT res;
@@ -35,6 +36,13 @@ void mpc_sample_load_next(mpc_sample *sample, float *buffer) {
         mpc_sample_reset(sample);
         trigger_sample_event(RESET, sample);
     }
+}
+
+void read_config(config *data) {
+    f_open(&confFile, "/mpc/mpc.txt", FA_OPEN_EXISTING | FA_READ);
+    f_read(&confFile, data, sizeof(config), &br);
+    f_close(&confFile);
+    DEBUG_PRINT("Read from conf: %i\n", br);
 }
 
 

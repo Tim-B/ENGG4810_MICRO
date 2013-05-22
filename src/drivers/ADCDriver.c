@@ -3,6 +3,8 @@
 #define ADC_SEQUENCER_LENGTH 1
 
 int nextCheck = 0;
+int stepCnt = 0;
+float stepInt = (2 * M_PI) / (44100 / 512);
 
 void setupADC() {
     SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
@@ -41,10 +43,23 @@ void readADC(sample_block *block) {
     ADCIntClear(ADC0_BASE, 1);
     ADCSequenceDataGet(ADC0_BASE, 1, ulADC0_Value);
     
-    block->effects[0].paramX = scale(ulADC0_Value[0]);
+    float lfoVal = scale(ulADC0_Value[0]);
+    int lfoFreq = (2 * lfoVal) + 0.5;
+    float sinIn = stepInt * stepCnt * lfoFreq ;
+    // block->effects[0].paramX = lfoVal;  
+    if(lfoOn()) {
+       block->effects[0].paramX = (0.45 * arm_sin_f32(sinIn)) + 0.45; 
+    } else {
+       block->effects[0].paramX = lfoVal;  
+    }
+    
+    if(block->effects[0].paramX > 1 || block->effects[0].paramX < 0) {
+        DEBUG_PRINT("Huuuu\n", NULL);
+    }
+
     block->effects[0].paramY = scale(ulADC0_Value[1]);
     block->effects[1].paramX = scale(ulADC0_Value[2]);
     block->effects[1].paramY = scale(ulADC0_Value[3]);
-    
+    stepCnt++;
     // DEBUG_PRINT("ADC %i %i %i %i\n", ulADC0_Value[0], ulADC0_Value[1], ulADC0_Value[2], ulADC0_Value[3]);
 }

@@ -17,6 +17,7 @@ FRESULT sd_list(char* path);
 void mpc_sample_open(mpc_sample *sample);
 void mpc_sample_load_next(mpc_sample *sample, float* buffer);
 void mpc_sample_reset(mpc_sample *sample);
+void read_config(config *config);
 
 #define PATH "/mpc"
 

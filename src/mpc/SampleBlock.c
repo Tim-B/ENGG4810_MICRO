@@ -13,8 +13,8 @@ void initBlock(sample_block *block) {
     block->current = false;
     block->cursor = 0;
     block->waiting = true;
-    block->effects[0].effect = NONE;
-    block->effects[1].effect = NONE;
+    block->effects[0].effect = getEffect(0);
+    block->effects[1].effect = getEffect(1);
     for (int i = 0; i < NUM_BLOCK_SAMPLED; i++) {
         block->data[i] = 0;
         block->raw[i] = 0;
@@ -41,31 +41,49 @@ void mixBlock(sample_block *block) {
         if (sample->playing == true) {
             mpc_sample_load_next(sample, &buffer[numSamps]);
             numSamps++;
-            if(numSamps > 1) {
+            if (numSamps > 1) {
                 break;
             }
         }
     }
-    if(numSamps >= 2) {
+    if (numSamps >= 2) {
         arm_add_f32(&buffer[0], &buffer[1], &temp[0], NUM_BLOCK_SAMPLED);
         arm_scale_f32(&temp[0], 0.5f, &block->raw, NUM_BLOCK_SAMPLED);
-    } else if(numSamps == 1) {
-        arm_copy_f32 (&buffer[0], &block->raw, NUM_BLOCK_SAMPLED);
+    } else if (numSamps == 1) {
+        arm_copy_f32(&buffer[0], &block->raw, NUM_BLOCK_SAMPLED);
     } else {
-        arm_fill_f32 (0.0f, &block->raw, NUM_BLOCK_SAMPLED);
+        arm_fill_f32(0.0f, &block->raw, NUM_BLOCK_SAMPLED);
     }
-    // arm_scale_f32(&block->raw, 0.8f, &block->raw, NUM_BLOCK_SAMPLED);
+    arm_scale_f32(&block->raw, 0.5f, &block->raw, NUM_BLOCK_SAMPLED);;
+}
+
+void applyEffects(sample_block *block, effect_data* e) {
+    switch (e->effect) {
+        case LOW_PASS:
+            iirApply(LPF, block, e);
+            break;
+        case HIGH_PASS:
+            iirApply(HPF, block, e);
+            break;
+        case NOTCH_PASS:
+            iirApply(NOTCH, block, e);
+            break;
+        case BAND_PASS:
+            iirApply(BPF, block, e);
+            break;
+        default:
+            arm_copy_f32(&block->raw, &block->data, NUM_BLOCK_SAMPLED);
+            break;
+    }
 }
 
 void loadBlock(sample_block *block) {
     scan_keys();
     mixBlock(block);
     readADC(block);
-    arm_copy_f32 (&block->raw, &block->data, NUM_BLOCK_SAMPLED);
-    //decimateApply(block, &block->effects[0]);
-    //iirApply(HPF, block, &block->effects[0]);
-    //arm_copy_f32 (&block->data, &block->raw, NUM_BLOCK_SAMPLED);
-    //iirApply(LPF, block, &block->effects[1]);
+    applyEffects(block, &block->effects[0]);
+    arm_copy_f32(&block->data, &block->raw, NUM_BLOCK_SAMPLED);
+    applyEffects(block, &block->effects[1]);
     block->waiting = false;
     block->cursor = 0;
 }
@@ -102,12 +120,12 @@ int getOutput() {
     value += 0xFFF / 2;
     int out = (int) value;
 
-    for(int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         effect = &playing_block->effects[i];
-        if(effect->effect == KO) {
+        if (effect->effect == KO) {
             out = applyKO(out, effect);
         }
-        if(effect->effect == BITCRUSH_DECIMATE) {
+        if (effect->effect == BITCRUSH_DECIMATE) {
             out = applyDecimate(out, effect);
         }
     }

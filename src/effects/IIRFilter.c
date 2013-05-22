@@ -62,8 +62,15 @@ void iirApply(BIQUAD_TYPE type, sample_block *block, effect_data *effect) {
     }
 
     q = effect->paramY;
-    q = q * 3 + 0.3;
+    q = (q * 3) + 0.5;
 
     biquad_gen(type, S.pCoeffs, freq, q);
+    
+    for (int i = 0; i < 5; i++) {
+        if (isnan(coeffs[i])) {
+            coeffs[i] = 0;
+        }
+    }
+    
     arm_biquad_cascade_df1_f32(&S, &block->raw[0], &block->data[0], NUM_BLOCK_SAMPLED);
 }

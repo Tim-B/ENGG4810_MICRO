@@ -17,7 +17,9 @@ void keycontrol_setup() {
     
     GPIOPadConfigSet(GPIO_PORTD_BASE, LOW_PINS, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_OD_WPD);
     
-    GPIOPinTypeGPIOInput(GPIO_PORTB_BASE, GPIO_PIN_0);
+    GPIOPinTypeGPIOInput(GPIO_PORTB_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+    
+    GPIOPadConfigSet(GPIO_PORTB_BASE, GPIO_PIN_0 | GPIO_PIN_1, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_OD_WPD);
 
     //GPIOIntTypeSet(GPIO_PORTD_BASE, LOW_PINS, GPIO_BOTH_EDGES);
     //GPIOPinIntEnable(GPIO_PORTD_BASE, LOW_PINS);
@@ -58,7 +60,6 @@ void scan_keys() {
     int readVal = 0;
     bool loopPressed = GPIOPinRead(GPIO_PORTB_BASE, GPIO_PIN_0);
     mpc_sample *sample;
-    SysCtlDelay(25);
     for (int r = 0; r < NUM_KEY_ROWS; r++) {
         GPIOPinWrite(GPIO_PORTC_BASE, HIGH_PINS, 0 | mpc_row_keys[r]);
         for (int c = 0; c < NUM_KEY_COLS; c++) {
