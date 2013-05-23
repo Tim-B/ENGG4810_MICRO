@@ -13,10 +13,10 @@ void initBlock(sample_block *block) {
     block->current = false;
     block->cursor = 0;
     block->waiting = true;
-    //block->effects[0].effect = getEffect(0);
-    //block->effects[1].effect = getEffect(1);
-    block->effects[0].effect = ECHO;
-    block->effects[1].effect = NONE;
+    block->effects[0].effect = getEffect(0);
+    block->effects[1].effect = getEffect(1);
+    //block->effects[0].effect = KO;
+    //block->effects[1].effect = NONE;
     for (int i = 0; i < NUM_BLOCK_SAMPLED; i++) {
         block->data[i] = 0;
         block->raw[i] = 0;

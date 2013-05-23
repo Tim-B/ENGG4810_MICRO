@@ -39,7 +39,10 @@ void iirApply(BIQUAD_TYPE type, sample_block *block, effect_data *effect) {
     float freq = 0;
     float q = 0;
     limitState();
-
+    
+    q = effect->paramY;
+    q = (q * 3) + 0.5;
+    
     switch (type) {
         case LPF:
             freq = effect->paramX;
@@ -53,16 +56,15 @@ void iirApply(BIQUAD_TYPE type, sample_block *block, effect_data *effect) {
             break;
         case BPF:
             freq = effect->paramX;
-            freq = 10000 * freq;
+            freq = 5000 * freq;
             break;
         case NOTCH:
             freq = effect->paramX;
-            freq = 10000 * freq;
+            freq = 1000 * freq;
+            q = effect->paramY;
+            q = (q * 0.9) + 0.1;
             break;
     }
-
-    q = effect->paramY;
-    q = (q * 3) + 0.5;
 
     biquad_gen(type, S.pCoeffs, freq, q);
     
