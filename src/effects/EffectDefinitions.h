@@ -14,7 +14,8 @@ typedef enum {
     BAND_PASS,
     BITCRUSH_DECIMATE,
     KO,
-    ECHO_DELAY,
+    ECHO,
+    DELAY,
     NONE,
 } effect;
 

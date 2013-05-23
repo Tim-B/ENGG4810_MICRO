@@ -8,7 +8,7 @@
 #ifndef ECHOEFFECT_H
 #define	ECHOEFFECT_H
 
-int applyEcho(int sample, float feed, int time);
+int applyEcho(int input, effect_data* e);
 
 #endif	/* ECHOEFFECT_H */
 

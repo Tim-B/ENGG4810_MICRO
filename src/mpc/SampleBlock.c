@@ -13,8 +13,10 @@ void initBlock(sample_block *block) {
     block->current = false;
     block->cursor = 0;
     block->waiting = true;
-    block->effects[0].effect = getEffect(0);
-    block->effects[1].effect = getEffect(1);
+    //block->effects[0].effect = getEffect(0);
+    //block->effects[1].effect = getEffect(1);
+    block->effects[0].effect = ECHO;
+    block->effects[1].effect = NONE;
     for (int i = 0; i < NUM_BLOCK_SAMPLED; i++) {
         block->data[i] = 0;
         block->raw[i] = 0;
@@ -128,6 +130,12 @@ int getOutput() {
         if (effect->effect == BITCRUSH_DECIMATE) {
             out = applyDecimate(out, effect);
         }
+        if(effect->effect == DELAY) {
+            out = applyDelay(out, effect);
+        }
+        if(effect->effect == ECHO) {
+            out = applyEcho(out, effect);
+        }        
     }
     return out;
 }

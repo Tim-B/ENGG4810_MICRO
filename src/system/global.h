@@ -63,6 +63,8 @@
 #include "../mpc/SampleBlock.h"
 #include "../drivers/ADCDriver.h"
 #include "../drivers/USBStore.h"
+#include "../effects/OutputHistory.h"
+#include "../effects/DelayEffect.h"
 #include "../effects/EchoEffect.h"
 #include "../effects/IIRFilter.h"
 #include "../effects/DecimateEffect.h"

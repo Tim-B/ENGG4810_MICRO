@@ -34,9 +34,9 @@ effect getEffect(int index) {
         case 4:
             return NOTCH_PASS;
         case 5:
-            return ECHO_DELAY;
+            return ECHO;
         case 6:
-            return ECHO_DELAY;
+            return DELAY;
         case 7:
             return BITCRUSH_DECIMATE;
         case 8:
