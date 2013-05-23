@@ -23,7 +23,6 @@ void setSampleProperties(int index, mpc_sample *sample) {
 
 effect getEffect(int index) {
     int val = configData.effects[index];
-    return NONE;
     switch(val) {
         case 1:
             return LOW_PASS;
