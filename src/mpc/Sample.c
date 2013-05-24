@@ -59,7 +59,8 @@ void trigger_sample_event(sample_event event, mpc_sample *sample) {
     }
     
     if(event == LFO_RELEASE) {
-        lfoRelease == true;
+        lfoRelease = true;
+        
     }
     
 }
