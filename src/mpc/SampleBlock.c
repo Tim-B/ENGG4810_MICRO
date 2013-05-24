@@ -15,7 +15,7 @@ void initBlock(sample_block *block) {
     block->waiting = true;
     block->effects[0].effect = getEffect(0);
     block->effects[1].effect = getEffect(1);
-    // block->effects[0].effect = BITCRUSH_DECIMATE;
+    // block->effects[0].effect = LOW_PASS;
     // block->effects[1].effect = NONE;
     for (int i = 0; i < NUM_BLOCK_SAMPLED; i++) {
         block->data[i] = 0;
