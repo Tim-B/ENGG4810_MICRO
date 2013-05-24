@@ -3,7 +3,7 @@
 
 void initConfig() {
     read_config(&configData);
-    DEBUG_PRINT("Conf value: %i\n", configData.effects[0]);
+    DEBUG_PRINT("Conf value: %i\n", configData.tempo);
 }
 
 void setSampleProperties(int index, mpc_sample *sample) {
@@ -53,4 +53,8 @@ bool lfoOn() {
     } else {
         return false;
     }
+}
+
+int tempo() {
+    return configData.tempo;
 }

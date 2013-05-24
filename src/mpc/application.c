@@ -19,8 +19,8 @@ void setup() {
     sd_init();
     dac_setup();
     keycontrol_setup();
-    tick_setup();
     initConfig();
+    tick_setup();    
     soundoutcontrol_setup();
     setupADC();
     setupUSBStore();
