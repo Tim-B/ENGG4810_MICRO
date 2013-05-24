@@ -1,5 +1,7 @@
 #include "../system/global.h"
 
+bool lfoRelease = true;
+
 void setup_sample(mpc_sample *sample) {
     mpc_sample_open(sample);
     sample->needs_reset = false;
@@ -42,6 +44,22 @@ void trigger_sample_event(sample_event event, mpc_sample *sample) {
         if(!sample->loop) {
             sample->playing = false;
         }
+    }
+    
+    if(event == LFO_PRESS) {
+        if(lfoRelease == false) {
+            return;
+        }
+        if(lfoOn()) {
+            setLFO(false);
+        } else {
+            setLFO(true); 
+        }
+        lfoRelease = false;
+    }
+    
+    if(event == LFO_RELEASE) {
+        lfoRelease == true;
     }
     
 }

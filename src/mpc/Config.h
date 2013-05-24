@@ -24,6 +24,7 @@ void setSampleProperties(int index, mpc_sample *sample);
 effect getEffect(int index);
 bool lfoOn();
 int tempo();
+void setLFO(bool val);
 
 #endif	/* CONFIG_H */
 

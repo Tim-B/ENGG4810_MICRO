@@ -1,6 +1,8 @@
 
 #include "../system/global.h"
 
+bool lfoVal = false;
+
 void initConfig() {
     read_config(&configData);
     DEBUG_PRINT("Conf value: %i\n", configData.tempo);
@@ -47,12 +49,11 @@ effect getEffect(int index) {
 }
 
 bool lfoOn() {
-    return false;
-    if(configData.lfo & 0x01) {
-        return true;
-    } else {
-        return false;
-    }
+    return lfoVal;
+}
+
+void setLFO(bool val) {
+    lfoVal = val;
 }
 
 int tempo() {

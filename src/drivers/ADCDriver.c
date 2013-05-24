@@ -44,10 +44,10 @@ void readADC(sample_block *block) {
     ADCSequenceDataGet(ADC0_BASE, 1, ulADC0_Value);
     
     float lfoVal = scale(ulADC0_Value[0]);
-    int lfoFreq = (2 * lfoVal) + 0.5;
-    float sinIn = stepInt * stepCnt * lfoFreq ;
     // block->effects[0].paramX = lfoVal;  
     if(lfoOn()) {
+        int lfoFreq = (2 * lfoVal) + 0.5;
+        float sinIn = stepInt * stepCnt * lfoFreq ;
        block->effects[0].paramX = (0.45 * arm_sin_f32(sinIn)) + 0.45; 
     } else {
        block->effects[0].paramX = lfoVal;  
