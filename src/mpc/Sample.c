@@ -5,7 +5,6 @@ bool lfoRelease = true;
 void setup_sample(mpc_sample *sample) {
     mpc_sample_open(sample);
     sample->needs_reset = false;
-    sample->latch = false;
     sample->loop = false;
     sample->playing = false;
 }

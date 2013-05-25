@@ -1,7 +1,7 @@
 #include "../system/global.h"
 
 unsigned char mpc_row_keys[] = {GPIO_PIN_4, GPIO_PIN_5, GPIO_PIN_6, GPIO_PIN_7};
-unsigned char mpc_col_keys[] = {GPIO_PIN_0, GPIO_PIN_1, GPIO_PIN_2, GPIO_PIN_3};
+unsigned char mpc_col_keys[] = {GPIO_PIN_3, GPIO_PIN_2, GPIO_PIN_1, GPIO_PIN_0};
 
 bool bounce_hold = 0;
 int debounce_target = 0;
@@ -28,7 +28,7 @@ void keycontrol_setup() {
 }
 
 void add_key_sample(mpc_sample *sample) {
-    keys[xAllocated][yAllocated].sample = sample;
+    keys[yAllocated][xAllocated].sample = sample;
     DEBUG_PRINT("Assigning %i %i %i\n", xAllocated, yAllocated, sample->header.SamplesPerSec);
     yAllocated++;
     if (yAllocated >= NUM_KEY_COLS) {

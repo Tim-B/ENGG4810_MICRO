@@ -14,7 +14,6 @@ typedef struct CONFIG {
     unsigned char sampleData[NUM_SAMPLES];
     unsigned char tempo;
     unsigned char effects[2];
-    unsigned char lfo;
 } config;
 
 config configData;
