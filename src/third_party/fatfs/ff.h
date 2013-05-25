@@ -29,14 +29,14 @@
 /  writing functions, f_write, f_sync, f_unlink, f_mkdir, f_chmod, f_rename
 /  and useless f_getfree. */
 
-#define _FS_MINIMIZE    0
+#define _FS_MINIMIZE    1
 /* The _FS_MINIMIZE option defines minimization level to remove some functions.
 /  0: Full function.
 /  1: f_stat, f_getfree, f_unlink, f_mkdir, f_chmod and f_rename are removed.
 /  2: f_opendir and f_readdir are removed in addition to level 1.
 /  3: f_lseek is removed in addition to level 2. */
 
-#define _DRIVES        2
+#define _DRIVES        1
 /* Number of logical drives to be used. This affects the size of internal table. */
 
 #define    _USE_MKFS    0
