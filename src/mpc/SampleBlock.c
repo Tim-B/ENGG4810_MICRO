@@ -53,10 +53,10 @@ void mixBlock(sample_block *block) {
         arm_scale_f32(&temp[0], 0.5f, &block->raw, NUM_BLOCK_SAMPLED);
     } else if (numSamps == 1) {
         arm_copy_f32(&buffer[0], &block->raw, NUM_BLOCK_SAMPLED);
+        arm_scale_f32(&block->raw, 0.5f, &block->raw, NUM_BLOCK_SAMPLED);
     } else {
         arm_fill_f32(0.0f, &block->raw, NUM_BLOCK_SAMPLED);
     }
-    arm_scale_f32(&block->raw, 0.5f, &block->raw, NUM_BLOCK_SAMPLED);;
 }
 
 void applyEffects(sample_block *block, effect_data* e) {
