@@ -1,6 +1,7 @@
 #include "../system/global.h"
 
 bool lfoRelease = true;
+bool loopRelease = true;
 
 void setup_sample(mpc_sample *sample) {
     mpc_sample_open(sample);
@@ -19,11 +20,15 @@ void check_reset_sample(mpc_sample *sample) {
 void trigger_sample_event(sample_event event, mpc_sample *sample) {
     
     if(event == LOOP_PRESS) {
+        if(loopRelease == false) {
+            return;
+        }
         if(sample->loop) {
             sample->loop = false;
         } else {
             sample->loop = true;
         }
+        loopRelease = false;
     }
     
     if(event == KEY_ON) {
@@ -59,7 +64,10 @@ void trigger_sample_event(sample_event event, mpc_sample *sample) {
     
     if(event == LFO_RELEASE) {
         lfoRelease = true;
-        
+    }
+    
+    if(event == LOOP_RELEASE) {
+        loopRelease = true;
     }
     
 }

@@ -69,7 +69,7 @@ void scan_keys() {
             if (sample->in_use == true) {
                 readVal = GPIOPinRead(GPIO_PORTD_BASE, mpc_col_keys[c]);
                 if (readVal) {
-                    if (r == 2 && c == 3) {
+                    if (r == 3 && c == 1) {
                         if(fnPressed) {
                             trigger_sample_event(LFO_PRESS, sample); 
                         } else {
@@ -77,11 +77,13 @@ void scan_keys() {
                         }
                         // DEBUG_PRINT("Sample active: %i %i\n", r, c);
                     }
+                    // DEBUG_PRINT("Sample active: %i %i\n", r, c);
                     if(!fnPressed) {
                         trigger_sample_event(KEY_ON, sample);
                         if (loopPressed) {
-                            // DEBUG_PRINT("Loop pressed\n", NULL);
                             trigger_sample_event(LOOP_PRESS, sample);
+                        } else {
+                            trigger_sample_event(LOOP_RELEASE, sample);
                         }
                     }
                 } else {

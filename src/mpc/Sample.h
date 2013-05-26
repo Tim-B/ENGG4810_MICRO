@@ -26,6 +26,7 @@ typedef enum {
     KEY_OFF,
     RESET,
     LOOP_PRESS,
+    LOOP_RELEASE,
     LFO_PRESS,
     LFO_RELEASE,
 } sample_event;
